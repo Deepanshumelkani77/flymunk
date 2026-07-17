@@ -17,15 +17,15 @@ const Header = () => {
   ];
 
   return (
-    <div className="relative w-full h-[600px]">
+    <div className="relative w-full h-[500px]">
       {/* Hero Background Image */}
       <div className="absolute inset-0">
         <img 
-          src={assets.seen} 
+          src={assets.seenn} 
           alt="Travel Background" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#02183D]/70 via-[#02183D]/60 to-[#02183D]/50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#02183D]/60 via-[#02183D]/50 to-[#02183D]/40" />
       </div>
 
       {/* Search Box - Spans from top to bottom of hero */}

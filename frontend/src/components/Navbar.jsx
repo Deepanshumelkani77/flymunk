@@ -8,6 +8,21 @@ const CURRENCIES = [
   { code: 'GBP', label: 'UK', flag: '🇬🇧', countryCode: 'gb' },
 ]
 
+const LANGUAGES = [
+  { code: 'en', label: 'English', countryCode: 'us' },
+  { code: 'hi', label: 'Hindi', countryCode: 'in' },
+  { code: 'es', label: 'Spanish', countryCode: 'es' },
+  { code: 'fr', label: 'French', countryCode: 'fr' },
+  { code: 'de', label: 'German', countryCode: 'de' },
+  { code: 'it', label: 'Italian', countryCode: 'it' },
+  { code: 'pt', label: 'Portuguese', countryCode: 'pt' },
+  { code: 'ru', label: 'Russian', countryCode: 'ru' },
+  { code: 'ja', label: 'Japanese', countryCode: 'jp' },
+  { code: 'ko', label: 'Korean', countryCode: 'kr' },
+  { code: 'zh', label: 'Chinese', countryCode: 'cn' },
+  { code: 'ar', label: 'Arabic', countryCode: 'sa' },
+]
+
 
 
 
@@ -31,6 +46,8 @@ const Navbar = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [currency, setCurrency] = useState(CURRENCIES[0])
+  const [language, setLanguage] = useState(LANGUAGES[0])
+  const [dropdownView, setDropdownView] = useState('currency')
   const dropdownRef = useRef(null)
 
   // Add a shadow once the page has scrolled, so the bar reads as "lifted"
@@ -104,36 +121,93 @@ const Navbar = () => {
               {showLanguageDropdown && (
                 <div
                   role="listbox"
-                  className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-1.5 overflow-hidden"
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden"
                 >
-                  <p className="px-4 pt-2 pb-1.5 text-[11px] font-semibold tracking-wide text-slate-400 uppercase">
-                    Currency
-                  </p>
-                  {CURRENCIES.map((c) => (
+                  {/* Toggle Tabs */}
+                  <div className="flex border-b border-slate-100">
                     <button
-                      key={c.code}
                       type="button"
-                      role="option"
-                      aria-selected={currency.code === c.code}
-                      onClick={() => {
-                        setCurrency(c)
-                        setShowLanguageDropdown(false)
-                      }}
-                      className="w-full px-4 py-2 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
+                      onClick={() => setDropdownView('currency')}
+                      className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
+                        dropdownView === 'currency'
+                          ? 'text-[#02173C] border-b-2 border-[#02173C] bg-blue-50'
+                          : 'text-slate-500 hover:text-slate-700'
+                      }`}
                     >
-                      <span className="flex items-center space-x-2.5">
-                        <span className={`fi fi-${c.countryCode} rounded`}></span>
-                        <span className="text-sm text-slate-700">
-                          {c.code} · {c.label}
-                        </span>
-                      </span>
-                      {currency.code === c.code && (
-                        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={ORANGE} viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
+                      Currency
                     </button>
-                  ))}
+                    <button
+                      type="button"
+                      onClick={() => setDropdownView('language')}
+                      className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
+                        dropdownView === 'language'
+                          ? 'text-[#02173C] border-b-2 border-[#02173C] bg-blue-50'
+                          : 'text-slate-500 hover:text-slate-700'
+                      }`}
+                    >
+                      Language
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="max-h-80 overflow-y-auto">
+                    {dropdownView === 'currency' ? (
+                      <div>
+                        {CURRENCIES.map((c) => (
+                          <button
+                            key={c.code}
+                            type="button"
+                            role="option"
+                            aria-selected={currency.code === c.code}
+                            onClick={() => {
+                              setCurrency(c)
+                              setShowLanguageDropdown(false)
+                            }}
+                            className="w-full px-4 py-2 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="flex items-center space-x-2.5">
+                              <span className={`fi fi-${c.countryCode} rounded`}></span>
+                              <span className="text-sm text-slate-700">
+                                {c.code} · {c.label}
+                              </span>
+                            </span>
+                            {currency.code === c.code && (
+                              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={ORANGE} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div>
+                        {LANGUAGES.map((lang) => (
+                          <button
+                            key={lang.code}
+                            type="button"
+                            role="option"
+                            aria-selected={language.code === lang.code}
+                            onClick={() => {
+                              setLanguage(lang)
+                            }}
+                            className="w-full px-4 py-2 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="flex items-center space-x-2.5">
+                              <span className={`fi fi-${lang.countryCode} rounded`}></span>
+                              <span className="text-sm text-slate-700">
+                                {lang.label}
+                              </span>
+                            </span>
+                            {language.code === lang.code && (
+                              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={ORANGE} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -203,6 +277,26 @@ const Navbar = () => {
         }`}
       >
         <div className="px-4 py-4 space-y-1 bg-white">
+          <div className="flex items-center justify-between px-2 py-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Language</span>
+            <div className="flex space-x-1">
+              {LANGUAGES.slice(0, 4).map((lang) => (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => setLanguage(lang)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors ${
+                    language.code === lang.code ? 'text-white' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                  style={language.code === lang.code ? { backgroundColor: NAVY } : {}}
+                >
+                  <span className={`fi fi-${lang.countryCode} rounded mr-1`}></span>
+                  {lang.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="flex items-center justify-between px-2 py-2">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Currency</span>
             <div className="flex space-x-1">
