@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../components/Header'
-
+import Newuser from '../components/Newuser'
 
 
 const Home = () => {
@@ -8,7 +8,7 @@ const Home = () => {
     <div className="pt-16">
       <div className="min-h-screen bg-white">
        <Header />
-     
+       <Newuser />
       </div>
     </div>
   )
