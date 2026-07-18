@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Sparkles, ArrowRight } from 'lucide-react'
 import assets from '../assets/assets';
 
 const NAVY = '#02183D'
 const ORANGE = '#FE6101'
 
-const Offer = () => {
+const Offers = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const scrollRef = useRef(null)
 
@@ -49,6 +49,14 @@ const Offer = () => {
       description: 'Special offers for family vacations',
       image: assets.p5,
       cta: 'Learn More'
+    },
+    {
+      id: 6,
+      title: 'Adventure Tours',
+      subtitle: 'Best Price',
+      description: 'Explore amazing destinations with guided tours',
+      image: assets.p6,
+      cta: 'Discover'
     }
   ]
 
@@ -63,39 +71,29 @@ const Offer = () => {
   }
 
   return (
-    <div className="w-full py-12 px-4 bg-white">
+    <div className="w-full py-12 pt-6 px-4 bg-white">
       <div className="max-w-8xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight" style={{ color: NAVY }}>
-                 Exclusive offers
-            </h2>
-            <p className="text-gray-500 mt-2 text-lg">Limited time deals you don't want to miss</p>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => scroll('left')}
-              className="w-12 h-12 rounded-xl border-2 flex items-center justify-center hover:shadow-lg transition-all hover:scale-105"
-              style={{ borderColor: '#E5E7EB' }}
-            >
-              <ChevronLeft size={24} className="text-gray-600" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-white hover:shadow-lg transition-all hover:scale-105"
-              style={{ backgroundColor: ORANGE }}
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold tracking-tight" style={{ color: NAVY }}>
+            Exclusive Offers
+          </h2>
+          <p className="text-gray-500 mt-2 text-lg">Limited time deals you don't want to miss</p>
         </div>
 
         {/* Image Carousel */}
         <div className="relative">
+          {/* Left Arrow */}
+          <button
+            onClick={() => scroll('left')}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-14 h-14 bg-white rounded-2xl shadow-xl flex items-center justify-center hover:shadow-2xl transition-all hover:scale-110 z-10 border border-gray-100"
+          >
+            <ChevronLeft size={28} className="text-gray-600" />
+          </button>
+
           <div
             ref={scrollRef}
-            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth snap-x snap-mandatory"
+            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth snap-x snap-mandatory px-4"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {offers.map((offer) => (
@@ -110,28 +108,19 @@ const Offer = () => {
                     alt={offer.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <div className="inline-block px-3 py-1.5 rounded-full text-xs font-bold text-white mb-3" style={{ backgroundColor: ORANGE }}>
-                      {offer.subtitle}
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{offer.title}</h3>
-                    <p className="text-white/90 text-sm mb-4">{offer.description}</p>
-                    <button className="flex items-center gap-2 px-5 py-2.5 bg-white text-gray-900 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-all">
-                      {offer.cta}
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </button>
-                  </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Right Arrow */}
+          <button
+            onClick={() => scroll('right')}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-14 h-14 bg-white rounded-2xl shadow-xl flex items-center justify-center hover:shadow-2xl transition-all hover:scale-110 z-10 border border-gray-100"
+            style={{ backgroundColor: ORANGE }}
+          >
+            <ChevronRight size={28} className="text-white" />
+          </button>
         </div>
 
         {/* Dots Indicator */}
@@ -170,4 +159,4 @@ const Offer = () => {
   )
 }
 
-export default Offer
+export default Offers

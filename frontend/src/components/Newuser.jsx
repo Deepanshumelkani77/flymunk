@@ -64,7 +64,7 @@ const Newuser = () => {
   ]
 
   return (
-    <div className="w-full py-12 pt-6 px-4 bg-gradient-to-b from-slate-50 to-white">
+    <div className="w-full py-6 pt-6 px-4 bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-8xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
