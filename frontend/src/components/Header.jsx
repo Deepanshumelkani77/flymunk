@@ -822,7 +822,12 @@ const Header = () => {
                 {/* Hotel Room Type Options */}
                 <div className="flex gap-2 mb-3 flex-wrap items-center">
                   <button 
-                    onClick={() => setHotelRoomType('upto4rooms')}
+                    onClick={() => {
+                      setHotelRoomType('upto4rooms');
+                      setHotelRooms(1);
+                      setHotelAdults(2);
+                      setHotelChildren(0);
+                    }}
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
                       hotelRoomType === 'upto4rooms' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
@@ -831,7 +836,12 @@ const Header = () => {
                     <Bed size={14} /> Up to 4 rooms
                   </button>
                   <button 
-                    onClick={() => setHotelRoomType('groupdeals')}
+                    onClick={() => {
+                      setHotelRoomType('groupdeals');
+                      setHotelRooms(5);
+                      setHotelAdults(10);
+                      setHotelChildren(0);
+                    }}
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
                       hotelRoomType === 'groupdeals' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
