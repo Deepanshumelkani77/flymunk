@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { MapPin, Calendar, Users, Search, Plane, Bed, Car, Briefcase, Landmark, ChevronDown, TrendingUp } from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { MapPin, Calendar, Users, Search, Plane, Bed, Car, Briefcase, Landmark, ChevronDown, TrendingUp, IndianRupee, PawPrint } from 'lucide-react';
 import assets from '../assets/assets';
 
 const NAVY = '#02183D';
@@ -68,6 +68,8 @@ const Header = () => {
   const [hotelChildren, setHotelChildren] = useState(0);
   const [travelingWithPet, setTravelingWithPet] = useState(false);
   const [hotelRoomType, setHotelRoomType] = useState('upto4rooms');
+  const [showPriceDropdown, setShowPriceDropdown] = useState(false);
+  const [selectedPriceRange, setSelectedPriceRange] = useState(null);
 
   // Sync return month to always be next month of departure month
   useEffect(() => {
@@ -586,7 +588,7 @@ const Header = () => {
                       <span>Regular</span>
                       <span className="text-[10px] py-0 rounded-full font-normal mt-0.5 text-gray-500">Regular fares</span>
                       {hoveredSpecialFare === 'Regular' && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-bottom-2 duration-200 overflow-hidden">
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
                           <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -625,7 +627,7 @@ const Header = () => {
                       <span>Student</span>
                       <span className="text-[10px] py-0 rounded-full font-normal mt-0.5 text-gray-500">Extra discounts/baggage</span>
                       {hoveredSpecialFare === 'Student' && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-bottom-2 duration-200 overflow-hidden">
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
                           <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -664,7 +666,7 @@ const Header = () => {
                       <span>Armed Forces</span>
                       <span className="text-[10px] py-0 rounded-full font-normal mt-0.5 text-gray-500">Up to ₹ 600 off</span>
                       {hoveredSpecialFare === 'Armed Forces' && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-bottom-2 duration-200 overflow-hidden">
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
                           <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -703,7 +705,7 @@ const Header = () => {
                       <span>Senior Citizen</span>
                       <span className="text-[10px] py-0 rounded-full font-normal mt-0.5 text-gray-500">Up to ₹ 600 off</span>
                       {hoveredSpecialFare === 'Senior Citizen' && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-bottom-2 duration-200 overflow-hidden">
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
                           <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -742,7 +744,7 @@ const Header = () => {
                       <span>Doctor and Nurses</span>
                       <span className="text-[10px] py-0 rounded-full font-normal mt-0.5 text-gray-500">Up to ₹ 600 off</span>
                       {hoveredSpecialFare === 'Doctor and Nurses' && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-bottom-2 duration-200 overflow-hidden">
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
                           <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -781,7 +783,7 @@ const Header = () => {
                       <span>GST Number</span>
                       <span className="text-[10px] py-0 rounded-full font-normal mt-0.5 text-gray-500">Upto 10% Extra Savings!</span>
                       {hoveredSpecialFare === 'GST Number' && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-bottom-2 duration-200 overflow-hidden">
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[320px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
                           <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -822,12 +824,7 @@ const Header = () => {
                 {/* Hotel Room Type Options */}
                 <div className="flex gap-2 mb-3 flex-wrap items-center">
                   <button 
-                    onClick={() => {
-                      setHotelRoomType('upto4rooms');
-                      setHotelRooms(1);
-                      setHotelAdults(2);
-                      setHotelChildren(0);
-                    }}
+                    onClick={() => setHotelRoomType('upto4rooms')}
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
                       hotelRoomType === 'upto4rooms' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
@@ -836,12 +833,7 @@ const Header = () => {
                     <Bed size={14} /> Up to 4 rooms
                   </button>
                   <button 
-                    onClick={() => {
-                      setHotelRoomType('groupdeals');
-                      setHotelRooms(5);
-                      setHotelAdults(10);
-                      setHotelChildren(0);
-                    }}
+                    onClick={() => setHotelRoomType('groupdeals')}
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
                       hotelRoomType === 'groupdeals' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
@@ -852,9 +844,9 @@ const Header = () => {
                 </div>
 
                 <div className="flex gap-3">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1">
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
                     {/* Destination */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="md:col-span-2 bg-gray-50 rounded-lg p-5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Destination</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
@@ -867,7 +859,7 @@ const Header = () => {
                     </div>
 
                     {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelCalendar(!showHotelCalendar)}>
+                    <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelCalendar(!showHotelCalendar)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Check-in - Check-out</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Calendar size={16} style={{ color: ORANGE }} />
@@ -1060,13 +1052,14 @@ const Header = () => {
                     </div>
 
                     {/* Rooms & Guests */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelGuestsDropdown(!showHotelGuestsDropdown)}>
+                    <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelGuestsDropdown(!showHotelGuestsDropdown)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Rooms & Guests</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Users size={16} style={{ color: ORANGE }} />
                         <span className="font-semibold text-gray-800 text-sm">
                           {hotelRooms} Room{hotelRooms !== 1 ? 's' : ''}, {hotelAdults} Adult{hotelAdults !== 1 ? 's' : ''}{hotelChildren > 0 && `, ${hotelChildren} Child${hotelChildren !== 1 ? 'ren' : ''}`}
                         </span>
+                        {travelingWithPet && <PawPrint size={14} className="text-orange-500 ml-1" />}
                         <ChevronDown size={14} className="text-gray-400 ml-auto" />
                       </div>
 
@@ -1171,12 +1164,56 @@ const Header = () => {
                         </div>
                       )}
                     </div>
-                  </div>
 
-                  {/* Search Button */}
-                  <button className="text-white px-8 py-3 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
-                    <Search size={18} /> Search
-                  </button>
+                    {/* Price per Night */}
+                    <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPriceDropdown(!showPriceDropdown)}>
+                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Price per Night</label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <IndianRupee size={16} style={{ color: ORANGE }} />
+                        <span className="font-semibold text-gray-800 text-sm">
+                          {selectedPriceRange || 'Select price'}
+                        </span>
+                        <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                      </div>
+
+                      {/* Price Dropdown */}
+                      {showPriceDropdown && (
+                        <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 w-[280px]">
+                          <div className="space-y-2">
+                            {[
+                              { label: '₹0 - ₹1500', value: '₹0-₹1500' },
+                              { label: '₹1500 - ₹2500', value: '₹1500-₹2500' },
+                              { label: '₹2500 - ₹5000', value: '₹2500-₹5000' },
+                              { label: '₹5000+', value: '₹5000+' }
+                            ].map((price) => (
+                              <button
+                                key={price.value}
+                                onClick={(e) => { e.stopPropagation(); setSelectedPriceRange(price.label); setShowPriceDropdown(false); }}
+                                className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center justify-between ${
+                                  selectedPriceRange === price.label
+                                    ? 'bg-orange-50 border-2 border-orange-400'
+                                    : 'hover:bg-gray-50 border-2 border-transparent'
+                                }`}
+                              >
+                                <span className={`text-sm font-medium ${
+                                  selectedPriceRange === price.label ? 'text-orange-600' : 'text-gray-800'
+                                }`}>
+                                  {price.label}
+                                </span>
+                                {selectedPriceRange === price.label && (
+                                  <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center">
+                                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  </div>
+                                )}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Trending Searches */}
@@ -1205,6 +1242,11 @@ const Header = () => {
                       </button>
                     ))}
                   </div>
+                  
+                  {/* Search Button */}
+                  <button className="ml-auto text-white px-8 py-2.5 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0" style={{ backgroundColor: ORANGE }}>
+                    <Search size={18} /> Search
+                  </button>
                 </div>
               </div>
             )}
