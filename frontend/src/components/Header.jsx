@@ -1343,7 +1343,7 @@ const Header = () => {
                   </div>
                   
                   {/* Search Button */}
-                  <button className="ml-auto text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0" style={{ backgroundColor: ORANGE }}>
+                  <button className="ml-auto text-white px-8 py-1.5 rounded-lg text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0" style={{ backgroundColor: ORANGE }}>
                     <Search size={18} /> Search
                   </button>
                 </div>
@@ -1639,7 +1639,7 @@ const Header = () => {
                       </div>
 
                       {/* Search Button */}
-                      <button className="text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
+                      <button className="m-auto text-white px-8 py-3 rounded-lg text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
                         <Search size={18} /> Search
                       </button>
                     </div>
@@ -1712,7 +1712,7 @@ const Header = () => {
                               <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Passenger</label>
                               <div className="flex items-center gap-2 mt-1">
                                 <Users size={16} style={{ color: ORANGE }} />
-                                <span className="font-semibold text-gray-800 text-sm">{airportPickupAdults + airportPickupChildren}</span>
+                                <span className="font-semibold text-gray-800 text-sm">{airportPickupAdults} Adult{airportPickupAdults !== 1 ? 's' : ''}{airportPickupChildren > 0 ? `, ${airportPickupChildren} Child${airportPickupChildren !== 1 ? 'ren' : ''}` : ''}</span>
                                 <ChevronDown size={14} className="text-gray-400 ml-auto" />
                               </div>
                             </div>
@@ -1750,7 +1750,7 @@ const Header = () => {
                                 </div>
 
                                 {/* Children */}
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between mb-4">
                                   <div>
                                     <div className="font-semibold text-gray-800 text-sm">Children</div>
                                     <div className="text-xs text-gray-500">2-11 years</div>
@@ -1777,13 +1777,25 @@ const Header = () => {
                                     </button>
                                   </div>
                                 </div>
+
+                                {/* Done Button */}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowAirportPickupPassenger(false);
+                                  }}
+                                  className="w-full py-2 rounded-lg font-bold text-white transition-all hover:shadow-lg"
+                                  style={{ backgroundColor: ORANGE }}
+                                >
+                                  Done
+                                </button>
                               </div>
                             )}
                           </div>
                         </div>
 
                         {/* Search Button */}
-                        <button className="text-white px-8 py-2 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-orange-500 to-orange-600" style={{ backgroundColor: ORANGE }}>
+                        <button className="m-auto text-white px-8 py-4 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-orange-500 to-orange-600" style={{ backgroundColor: ORANGE }}>
                           <Search size={18} /> Search
                         </button>
                       </div>
@@ -1822,7 +1834,7 @@ const Header = () => {
                           {/* Date & Time */}
                           <div className="relative">
                             <div 
-                              className="bg-white rounded-lg p-3 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400 cursor-pointer"
+                              className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400 cursor-pointer"
                               onClick={() => setShowAirportDropoffCalendar(!showAirportDropoffCalendar)}
                             >
                               <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Date & Time</label>
@@ -1936,7 +1948,7 @@ const Header = () => {
                               <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Passenger</label>
                               <div className="flex items-center gap-2 mt-1">
                                 <Users size={16} style={{ color: ORANGE }} />
-                                <span className="font-semibold text-gray-800 text-sm">{airportDropoffAdults + airportDropoffChildren}</span>
+                                <span className="font-semibold text-gray-800 text-sm">{airportDropoffAdults} Adult{airportDropoffAdults !== 1 ? 's' : ''}{airportDropoffChildren > 0 ? `, ${airportDropoffChildren} Child${airportDropoffChildren !== 1 ? 'ren' : ''}` : ''}</span>
                                 <ChevronDown size={14} className="text-gray-400 ml-auto" />
                               </div>
                             </div>
@@ -1974,7 +1986,7 @@ const Header = () => {
                                 </div>
 
                                 {/* Children */}
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between mb-4">
                                   <div>
                                     <div className="font-semibold text-gray-800 text-sm">Children</div>
                                     <div className="text-xs text-gray-500">2-11 years</div>
@@ -2001,15 +2013,27 @@ const Header = () => {
                                     </button>
                                   </div>
                                 </div>
+
+                                {/* Done Button */}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowAirportDropoffPassenger(false);
+                                  }}
+                                  className="w-full py-2 rounded-lg font-bold text-white transition-all hover:shadow-lg"
+                                  style={{ backgroundColor: ORANGE }}
+                                >
+                                  Done
+                                </button>
                               </div>
                             )}
                           </div>
                         </div>
 
                         {/* Search Button */}
-                        <button className="text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
-                          <Search size={18} /> Search
-                        </button>
+                      <button className="m-auto text-white px-8 py-3 rounded-lg text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
+                        <Search size={18} /> Search
+                      </button>
                       </div>
                     )}
                   </div>
