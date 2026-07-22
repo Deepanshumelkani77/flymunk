@@ -71,6 +71,7 @@ const Header = () => {
   const [showPriceDropdown, setShowPriceDropdown] = useState(false);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
   const [showHotelSearch, setShowHotelSearch] = useState(false);
+  const [hoveredGroupDeals, setHoveredGroupDeals] = useState(false);
 
   // Sync return month to always be next month of departure month
   useEffect(() => {
@@ -190,7 +191,7 @@ const Header = () => {
                       onChange={(e) => {
                         setIsGroupTrip(e.target.checked);
                         if (e.target.checked) {
-                          setAdults(5);
+                          setAdults(10);
                           setChildren(0);
                           setInfants(0);
                         } else {
@@ -825,7 +826,12 @@ const Header = () => {
                 {/* Hotel Room Type Options */}
                 <div className="flex gap-2 mb-3 flex-wrap items-center">
                   <button 
-                    onClick={() => setHotelRoomType('upto4rooms')}
+                    onClick={() => {
+                      setHotelRoomType('upto4rooms');
+                      setHotelRooms(1);
+                      setHotelAdults(2);
+                      setHotelChildren(0);
+                    }}
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
                       hotelRoomType === 'upto4rooms' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
@@ -834,13 +840,61 @@ const Header = () => {
                     <Bed size={14} /> Up to 4 rooms
                   </button>
                   <button 
-                    onClick={() => setHotelRoomType('groupdeals')}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                    onClick={() => {
+                      setHotelRoomType('groupdeals');
+                      setHotelRooms(5);
+                      setHotelAdults(10);
+                      setHotelChildren(0);
+                    }}
+                    onMouseEnter={() => setHoveredGroupDeals(true)}
+                    onMouseLeave={() => setHoveredGroupDeals(false)}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg relative ${
                       hotelRoomType === 'groupdeals' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                     style={hotelRoomType === 'groupdeals' ? { backgroundColor: NAVY } : {}}
                   >
-                    <Briefcase size={14} /> Group deals
+                    <Briefcase size={14} /> Group Trip
+                    {hoveredGroupDeals && (
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[360px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
+                        <div className="bg-gradient-to-r from-orange-50 to-white px-4 py-3 border-b border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <Briefcase size={18} className="text-orange-500" />
+                            <h4 className="font-bold text-gray-800 text-base">Group Deals</h4>
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <p className="text-sm text-gray-600 leading-relaxed">Exclusive discounts and special offers for group bookings at participating hotels</p>
+                          <div className="bg-orange-50 rounded-lg p-3 border border-orange-100">
+                            <div className="font-semibold text-gray-800 text-sm mb-2 flex items-center gap-2">
+                              <Users size={14} className="text-orange-500" />
+                              Requirements
+                            </div>
+                            <ul className="space-y-2">
+                              <li className="flex items-start gap-2 text-xs text-gray-600">
+                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
+                                <span>Minimum 10 rooms required per booking</span>
+                              </li>
+                              <li className="flex items-start gap-2 text-xs text-gray-600">
+                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
+                                <span>Valid company/group ID proof mandatory</span>
+                              </li>
+                              <li className="flex items-start gap-2 text-xs text-gray-600">
+                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
+                                <span>Advance booking (7+ days) recommended</span>
+                              </li>
+                              <li className="flex items-start gap-2 text-xs text-gray-600">
+                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
+                                <span>Flexible cancellation policies available</span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-orange-600 font-medium">
+                            <TrendingUp size={12} />
+                            <span>Save up to 25% on group bookings</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </button>
                 </div>
 
@@ -1356,7 +1410,7 @@ const Header = () => {
                       onChange={(e) => {
                         setIsGroupTrip(e.target.checked);
                         if (e.target.checked) {
-                          setAdults(5);
+                          setAdults(10);
                           setChildren(0);
                           setInfants(0);
                         } else {
