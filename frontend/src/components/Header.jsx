@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { MapPin, Calendar, Users, Search, Plane, Bed, Car, Briefcase, Landmark, ChevronDown, TrendingUp, IndianRupee, PawPrint } from 'lucide-react';
+import { MapPin, Calendar, Users, Search, Plane, Bed, Car, Briefcase, Landmark, ChevronDown, ChevronLeft, ChevronRight, TrendingUp, IndianRupee, PawPrint, Clock } from 'lucide-react';
 import assets from '../assets/assets';
 
 const NAVY = '#02183D';
@@ -73,6 +73,36 @@ const Header = () => {
   const [showHotelSearch, setShowHotelSearch] = useState(false);
   const [hoveredGroupDeals, setHoveredGroupDeals] = useState(false);
 
+  // Car search state
+  const [carSearchType, setCarSearchType] = useState('carRentals');
+  const [dropOffDifferentLocation, setDropOffDifferentLocation] = useState(false);
+  const [airportTransferType, setAirportTransferType] = useState('pickup');
+  const [showCarPickupCalendar, setShowCarPickupCalendar] = useState(false);
+  const [showCarDropoffCalendar, setShowCarDropoffCalendar] = useState(false);
+  const [carPickupDate, setCarPickupDate] = useState(null);
+  const [carDropoffDate, setCarDropoffDate] = useState(null);
+  const [carPickupMonth, setCarPickupMonth] = useState(new Date());
+  const [carDropoffMonth, setCarDropoffMonth] = useState(new Date());
+  const [showCarPickupTime, setShowCarPickupTime] = useState(false);
+  const [showCarDropoffTime, setShowCarDropoffTime] = useState(false);
+  const [carPickupTime, setCarPickupTime] = useState('10:00');
+  const [carDropoffTime, setCarDropoffTime] = useState('10:00');
+
+  // Airport transfer state
+  const [showAirportDropoffCalendar, setShowAirportDropoffCalendar] = useState(false);
+  const [airportDropoffDate, setAirportDropoffDate] = useState(null);
+  const [airportDropoffMonth, setAirportDropoffMonth] = useState(new Date());
+  const [showAirportDropoffTime, setShowAirportDropoffTime] = useState(false);
+  const [airportDropoffTime, setAirportDropoffTime] = useState('10:00');
+
+  // Airport transfer passenger state
+  const [showAirportPickupPassenger, setShowAirportPickupPassenger] = useState(false);
+  const [airportPickupAdults, setAirportPickupAdults] = useState(1);
+  const [airportPickupChildren, setAirportPickupChildren] = useState(0);
+  const [showAirportDropoffPassenger, setShowAirportDropoffPassenger] = useState(false);
+  const [airportDropoffAdults, setAirportDropoffAdults] = useState(1);
+  const [airportDropoffChildren, setAirportDropoffChildren] = useState(0);
+
   // Sync return month to always be next month of departure month
   useEffect(() => {
     setReturnMonth(new Date(departureMonth.getFullYear(), departureMonth.getMonth() + 1, 1));
@@ -82,6 +112,20 @@ const Header = () => {
   useEffect(() => {
     setHotelReturnMonth(new Date(hotelDepartureMonth.getFullYear(), hotelDepartureMonth.getMonth() + 1, 1));
   }, [hotelDepartureMonth]);
+
+  // Generate time slots with half-hour intervals
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 0; hour < 24; hour++) {
+      for (let min = 0; min < 60; min += 30) {
+        const timeStr = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+        slots.push(timeStr);
+      }
+    }
+    return slots;
+  };
+
+  const timeSlots = generateTimeSlots();
 
   const tabs = [
     { id: 'flights', name: 'Flights', icon: <Plane size={20} /> },
@@ -210,7 +254,7 @@ const Header = () => {
                 <div className="flex gap-3">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
                     {/* From */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">From</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
@@ -224,7 +268,7 @@ const Header = () => {
                     </div>
 
                     {/* To */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">To</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
@@ -237,7 +281,7 @@ const Header = () => {
                     </div>
 
                     {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowCalendar(!showCalendar)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowCalendar(!showCalendar)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Departure - Return</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Calendar size={16} style={{ color: ORANGE }} />
@@ -425,7 +469,7 @@ const Header = () => {
                     </div>
 
                     {/* Passengers */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPassengerDropdown(!showPassengerDropdown)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPassengerDropdown(!showPassengerDropdown)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Passengers</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Users size={16} style={{ color: ORANGE }} />
@@ -522,7 +566,7 @@ const Header = () => {
                     </div>
 
                     {/* Class */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowClassDropdown(!showClassDropdown)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowClassDropdown(!showClassDropdown)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Class</label>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="font-semibold text-gray-800 text-sm">{selectedClass}</span>
@@ -814,7 +858,7 @@ const Header = () => {
                   </div>
 
                   {/* Search Button */}
-                  <button className="text-white px-8 py-3 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
+                  <button className="text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
                     <Search size={20} /> Search
                   </button>
                 </div>
@@ -901,7 +945,7 @@ const Header = () => {
                 <div className="flex gap-3">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
                     {/* Destination */}
-                    <div className="md:col-span-2 bg-gray-50 rounded-lg p-5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="md:col-span-2 bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Destination</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
@@ -914,7 +958,7 @@ const Header = () => {
                     </div>
 
                     {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelCalendar(!showHotelCalendar)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelCalendar(!showHotelCalendar)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Check-in - Check-out</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Calendar size={16} style={{ color: ORANGE }} />
@@ -1107,7 +1151,7 @@ const Header = () => {
                     </div>
 
                     {/* Rooms & Guests */}
-                    <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelGuestsDropdown(!showHotelGuestsDropdown)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelGuestsDropdown(!showHotelGuestsDropdown)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Rooms & Guests</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Users size={16} style={{ color: ORANGE }} />
@@ -1221,7 +1265,7 @@ const Header = () => {
                     </div>
 
                     {/* Price per Night */}
-                    <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPriceDropdown(!showPriceDropdown)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPriceDropdown(!showPriceDropdown)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Price per Night</label>
                       <div className="flex items-center gap-2 mt-1">
                         <IndianRupee size={16} style={{ color: ORANGE }} />
@@ -1299,7 +1343,7 @@ const Header = () => {
                   </div>
                   
                   {/* Search Button */}
-                  <button className="ml-auto text-white px-8 py-2.5 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0" style={{ backgroundColor: ORANGE }}>
+                  <button className="ml-auto text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0" style={{ backgroundColor: ORANGE }}>
                     <Search size={18} /> Search
                   </button>
                 </div>
@@ -1308,45 +1352,668 @@ const Header = () => {
 
             {activeTab === 'cars' && (
               <div className="space-y-3">
-                <div className="flex gap-3">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1">
-                    {/* Pick-up Location */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
-                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Pick-up Location</label>
-                      <div className="flex items-center gap-2 mt-1">
-                        <MapPin size={16} style={{ color: ORANGE }} />
-                        <input
-                          type="text"
-                          placeholder="City or Airport"
-                          className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
-                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Pick-up - Drop-off</label>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Calendar size={16} style={{ color: ORANGE }} />
-                        <span className="font-semibold text-gray-800 text-sm">Jul 16 - Jul 17</span>
-                      </div>
-                    </div>
-
-                    {/* Time */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer">
-                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Pick-up Time</label>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="font-semibold text-gray-800 text-sm">10:00 AM</span>
-                        <ChevronDown size={14} className="text-gray-400 ml-auto" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Search Button */}
-                  <button className="text-white px-8 py-3 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
-                    <Search size={18} /> Search
+                {/* Car Search Type Options */}
+                <div className="flex gap-2 mb-3">
+                  <button
+                    onClick={() => setCarSearchType('carRentals')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                      carSearchType === 'carRentals' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={carSearchType === 'carRentals' ? { backgroundColor: NAVY } : {}}
+                  >
+                    <Car size={14} /> Car Rentals
+                  </button>
+                  <button
+                    onClick={() => setCarSearchType('airportTransfers')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                      carSearchType === 'airportTransfers' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={carSearchType === 'airportTransfers' ? { backgroundColor: NAVY } : {}}
+                  >
+                    <Plane size={14} /> Airport Transfers
                   </button>
                 </div>
+
+                {/* Car Rentals Search */}
+                {carSearchType === 'carRentals' && (
+                  <div className="space-y-3">
+                    {/* Drop off at different location checkbox */}
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="dropOffDifferentLocation"
+                        checked={dropOffDifferentLocation}
+                        onChange={(e) => setDropOffDifferentLocation(e.target.checked)}
+                        className="w-4 h-4 accent-orange-500 cursor-pointer"
+                      />
+                      <label htmlFor="dropOffDifferentLocation" className="text-sm text-gray-700 font-medium cursor-pointer">
+                        Drop off at a different location
+                      </label>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <div className={`grid gap-3 flex-1 ${dropOffDifferentLocation ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-3'}`}>
+                        {/* Pick-up Location */}
+                        <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Pick-up Location</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <MapPin size={16} style={{ color: ORANGE }} />
+                            <input
+                              type="text"
+                              placeholder="Airport, city, station, region, district..."
+                              className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Drop-off Location (only shown when checkbox is checked) */}
+                        {dropOffDifferentLocation && (
+                          <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                            <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Drop-off Location</label>
+                            <div className="flex items-center gap-2 mt-1">
+                              <MapPin size={16} style={{ color: ORANGE }} />
+                              <input
+                                type="text"
+                                placeholder="Airport, city, station, region, district..."
+                                className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Pick-up Date & Time */}
+                        <div className="relative">
+                          <div 
+                            className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer"
+                            onClick={() => setShowCarPickupCalendar(!showCarPickupCalendar)}
+                          >
+                            <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Pick-up Date & Time</label>
+                            <div className="flex items-center justify-between mt-1">
+                              <div className="flex items-center gap-2">
+                                <Calendar size={16} style={{ color: ORANGE }} />
+                                <span className="font-semibold text-gray-800 text-sm">
+                                  {carPickupDate ? carPickupDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Jul 16'}
+                                </span>
+                              </div>
+                              <div 
+                                className="flex items-center gap-2 bg-white px-2 py-1 rounded border border-gray-200 hover:border-orange-300 transition-all"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setShowCarPickupTime(!showCarPickupTime);
+                                }}
+                              >
+                                <Clock size={14} style={{ color: ORANGE }} />
+                                <span className="font-semibold text-gray-800 text-sm">{carPickupTime}</span>
+                                <ChevronDown size={12} className="text-gray-400" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Time Dropdown */}
+                          {showCarPickupTime && (
+                            <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-32 max-h-64 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                              {timeSlots.map((time) => (
+                                <div
+                                  key={time}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCarPickupTime(time);
+                                    setShowCarPickupTime(false);
+                                  }}
+                                  className={`px-4 py-2 text-sm cursor-pointer hover:bg-orange-50 transition-all ${
+                                    carPickupTime === time ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'
+                                  }`}
+                                >
+                                  {time}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Calendar */}
+                          {showCarPickupCalendar && (
+                            <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                              {/* Calendar Header */}
+                              <div className="flex items-center justify-between mb-4">
+                                <button
+                                  onClick={() => setCarPickupMonth(new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth() - 1, 1))}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronLeft size={20} className="text-gray-600" />
+                                </button>
+                                <span className="font-bold text-gray-800">
+                                  {carPickupMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                </span>
+                                <button
+                                  onClick={() => setCarPickupMonth(new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth() + 1, 1))}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronRight size={20} className="text-gray-600" />
+                                </button>
+                              </div>
+
+                              {/* Calendar Grid */}
+                              <div className="grid grid-cols-7 gap-1 text-center">
+                                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                                  <div key={day} className="text-xs font-semibold text-gray-500 py-2">
+                                    {day}
+                                  </div>
+                                ))}
+                                {Array.from({ length: new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth() + 1, 0).getDate() }, (_, i) => {
+                                  const date = new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth(), i + 1);
+                                  const isPast = date < new Date().setHours(0, 0, 0, 0);
+                                  const isSelected = carPickupDate && date.toDateString() === carPickupDate.toDateString();
+                                  return (
+                                    <div
+                                      key={i}
+                                      onClick={() => {
+                                        if (!isPast) {
+                                          setCarPickupDate(date);
+                                          setShowCarPickupCalendar(false);
+                                        }
+                                      }}
+                                      className={`py-2 text-sm rounded-lg cursor-pointer transition-all ${
+                                        isPast
+                                          ? 'text-gray-300 cursor-not-allowed'
+                                          : isSelected
+                                          ? 'bg-orange-500 text-white font-semibold'
+                                          : 'hover:bg-orange-100 text-gray-700'
+                                      }`}
+                                    >
+                                      {i + 1}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Drop-off Date & Time */}
+                        <div className="relative">
+                          <div 
+                            className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer"
+                            onClick={() => setShowCarDropoffCalendar(!showCarDropoffCalendar)}
+                          >
+                            <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Drop-off Date & Time</label>
+                            <div className="flex items-center justify-between mt-1">
+                              <div className="flex items-center gap-2">
+                                <Calendar size={16} style={{ color: ORANGE }} />
+                                <span className="font-semibold text-gray-800 text-sm">
+                                  {carDropoffDate ? carDropoffDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Jul 17'}
+                                </span>
+                              </div>
+                              <div 
+                                className="flex items-center gap-2 bg-white px-2 py-1 rounded border border-gray-200 hover:border-orange-300 transition-all"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setShowCarDropoffTime(!showCarDropoffTime);
+                                }}
+                              >
+                                <Clock size={14} style={{ color: ORANGE }} />
+                                <span className="font-semibold text-gray-800 text-sm">{carDropoffTime}</span>
+                                <ChevronDown size={12} className="text-gray-400" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Time Dropdown */}
+                          {showCarDropoffTime && (
+                            <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-32 max-h-64 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                              {timeSlots.map((time) => (
+                                <div
+                                  key={time}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCarDropoffTime(time);
+                                    setShowCarDropoffTime(false);
+                                  }}
+                                  className={`px-4 py-2 text-sm cursor-pointer hover:bg-orange-50 transition-all ${
+                                    carDropoffTime === time ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'
+                                  }`}
+                                >
+                                  {time}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Calendar */}
+                          {showCarDropoffCalendar && (
+                            <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                              {/* Calendar Header */}
+                              <div className="flex items-center justify-between mb-4">
+                                <button
+                                  onClick={() => setCarDropoffMonth(new Date(carDropoffMonth.getFullYear(), carDropoffMonth.getMonth() - 1, 1))}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronLeft size={20} className="text-gray-600" />
+                                </button>
+                                <span className="font-bold text-gray-800">
+                                  {carDropoffMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                </span>
+                                <button
+                                  onClick={() => setCarDropoffMonth(new Date(carDropoffMonth.getFullYear(), carDropoffMonth.getMonth() + 1, 1))}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronRight size={20} className="text-gray-600" />
+                                </button>
+                              </div>
+
+                              {/* Calendar Grid */}
+                              <div className="grid grid-cols-7 gap-1 text-center">
+                                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                                  <div key={day} className="text-xs font-semibold text-gray-500 py-2">
+                                    {day}
+                                  </div>
+                                ))}
+                                {Array.from({ length: new Date(carDropoffMonth.getFullYear(), carDropoffMonth.getMonth() + 1, 0).getDate() }, (_, i) => {
+                                  const date = new Date(carDropoffMonth.getFullYear(), carDropoffMonth.getMonth(), i + 1);
+                                  const isPast = date < new Date().setHours(0, 0, 0, 0);
+                                  const isSelected = carDropoffDate && date.toDateString() === carDropoffDate.toDateString();
+                                  return (
+                                    <div
+                                      key={i}
+                                      onClick={() => {
+                                        if (!isPast) {
+                                          setCarDropoffDate(date);
+                                          setShowCarDropoffCalendar(false);
+                                        }
+                                      }}
+                                      className={`py-2 text-sm rounded-lg cursor-pointer transition-all ${
+                                        isPast
+                                          ? 'text-gray-300 cursor-not-allowed'
+                                          : isSelected
+                                          ? 'bg-orange-500 text-white font-semibold'
+                                          : 'hover:bg-orange-100 text-gray-700'
+                                      }`}
+                                    >
+                                      {i + 1}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Search Button */}
+                      <button className="text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
+                        <Search size={18} /> Search
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Airport Transfers Search */}
+                {carSearchType === 'airportTransfers' && (
+                  <div className="space-y-3">
+                    {/* Airport Transfer Type Options */}
+                    <div className="flex gap-2 mb-3">
+                      <button
+                        onClick={() => setAirportTransferType('pickup')}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg border-2 ${
+                          airportTransferType === 'pickup' 
+                            ? 'border-orange-500 text-orange-600 bg-orange-50' 
+                            : 'border-gray-200 text-gray-600 bg-white hover:border-orange-300 hover:bg-orange-50'
+                        }`}
+                      >
+                        <Plane size={14} className={airportTransferType === 'pickup' ? 'text-orange-600' : 'text-gray-500'} /> Airport Pick-up
+                      </button>
+                      <button
+                        onClick={() => setAirportTransferType('dropoff')}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg border-2 ${
+                          airportTransferType === 'dropoff' 
+                            ? 'border-orange-500 text-orange-600 bg-orange-50' 
+                            : 'border-gray-200 text-gray-600 bg-white hover:border-orange-300 hover:bg-orange-50'
+                        }`}
+                      >
+                        <Car size={14} className={airportTransferType === 'dropoff' ? 'text-orange-600' : 'text-gray-500'} /> Airport Drop-off
+                      </button>
+                    </div>
+
+                    {/* Airport Pick-up Search Fields */}
+                    {airportTransferType === 'pickup' && (
+                      <div className="flex gap-3">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1">
+                          {/* Arrival Airport */}
+                          <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400">
+                            <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Arrival Airport</label>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Plane size={16} style={{ color: ORANGE }} />
+                              <input
+                                type="text"
+                                placeholder="Enter airport name"
+                                className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Destination */}
+                          <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400">
+                            <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Enter a Destination</label>
+                            <div className="flex items-center gap-2 mt-1">
+                              <MapPin size={16} style={{ color: ORANGE }} />
+                              <input
+                                type="text"
+                                placeholder="City or address"
+                                className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Passenger */}
+                          <div className="relative">
+                            <div 
+                              className="bg-white rounded-lg p-3 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400 cursor-pointer"
+                              onClick={() => setShowAirportPickupPassenger(!showAirportPickupPassenger)}
+                            >
+                              <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Passenger</label>
+                              <div className="flex items-center gap-2 mt-1">
+                                <Users size={16} style={{ color: ORANGE }} />
+                                <span className="font-semibold text-gray-800 text-sm">{airportPickupAdults + airportPickupChildren}</span>
+                                <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                              </div>
+                            </div>
+
+                            {/* Passenger Dropdown */}
+                            {showAirportPickupPassenger && (
+                              <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-64 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                                {/* Adults */}
+                                <div className="flex items-center justify-between mb-3">
+                                  <div>
+                                    <div className="font-semibold text-gray-800 text-sm">Adults</div>
+                                    <div className="text-xs text-gray-500">12+ years</div>
+                                  </div>
+                                  <div className="flex items-center gap-3">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (airportPickupAdults > 1) setAirportPickupAdults(airportPickupAdults - 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">-</span>
+                                    </button>
+                                    <span className="font-semibold text-gray-800 w-6 text-center">{airportPickupAdults}</span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setAirportPickupAdults(airportPickupAdults + 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">+</span>
+                                    </button>
+                                  </div>
+                                </div>
+
+                                {/* Children */}
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <div className="font-semibold text-gray-800 text-sm">Children</div>
+                                    <div className="text-xs text-gray-500">2-11 years</div>
+                                  </div>
+                                  <div className="flex items-center gap-3">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (airportPickupChildren > 0) setAirportPickupChildren(airportPickupChildren - 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">-</span>
+                                    </button>
+                                    <span className="font-semibold text-gray-800 w-6 text-center">{airportPickupChildren}</span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setAirportPickupChildren(airportPickupChildren + 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">+</span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Search Button */}
+                        <button className="text-white px-8 py-2 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-orange-500 to-orange-600" style={{ backgroundColor: ORANGE }}>
+                          <Search size={18} /> Search
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Airport Drop-off Search Fields */}
+                    {airportTransferType === 'dropoff' && (
+                      <div className="flex gap-3">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 flex-1">
+                          {/* Pick-up Point */}
+                          <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400">
+                            <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Enter a Pick-up Point</label>
+                            <div className="flex items-center gap-2 mt-1">
+                              <MapPin size={16} style={{ color: ORANGE }} />
+                              <input
+                                type="text"
+                                placeholder="Address or location"
+                                className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Airport or City */}
+                          <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400">
+                            <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Enter an Airport or City</label>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Plane size={16} style={{ color: ORANGE }} />
+                              <input
+                                type="text"
+                                placeholder="Airport name or city"
+                                className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Date & Time */}
+                          <div className="relative">
+                            <div 
+                              className="bg-white rounded-lg p-3 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400 cursor-pointer"
+                              onClick={() => setShowAirportDropoffCalendar(!showAirportDropoffCalendar)}
+                            >
+                              <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Date & Time</label>
+                              <div className="flex items-center justify-between mt-1">
+                                <div className="flex items-center gap-2">
+                                  <Calendar size={16} style={{ color: ORANGE }} />
+                                  <span className="font-semibold text-gray-800 text-sm">
+                                    {airportDropoffDate ? airportDropoffDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Jul 16'}
+                                  </span>
+                                </div>
+                                <div 
+                                  className="flex items-center gap-2 bg-orange-50 px-2 py-1 rounded border border-orange-200 hover:border-orange-400 transition-all"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowAirportDropoffTime(!showAirportDropoffTime);
+                                  }}
+                                >
+                                  <Clock size={14} style={{ color: ORANGE }} />
+                                  <span className="font-semibold text-gray-800 text-sm">{airportDropoffTime}</span>
+                                  <ChevronDown size={12} className="text-gray-400" />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Time Dropdown */}
+                            {showAirportDropoffTime && (
+                              <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-32 max-h-64 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                                {timeSlots.map((time) => (
+                                  <div
+                                    key={time}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setAirportDropoffTime(time);
+                                      setShowAirportDropoffTime(false);
+                                    }}
+                                    className={`px-4 py-2 text-sm cursor-pointer hover:bg-orange-50 transition-all ${
+                                      airportDropoffTime === time ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'
+                                    }`}
+                                  >
+                                    {time}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Calendar */}
+                            {showAirportDropoffCalendar && (
+                              <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                                {/* Calendar Header */}
+                                <div className="flex items-center justify-between mb-4">
+                                  <button
+                                    onClick={() => setAirportDropoffMonth(new Date(airportDropoffMonth.getFullYear(), airportDropoffMonth.getMonth() - 1, 1))}
+                                    className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                  >
+                                    <ChevronLeft size={20} className="text-gray-600" />
+                                  </button>
+                                  <span className="font-bold text-gray-800">
+                                    {airportDropoffMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                  </span>
+                                  <button
+                                    onClick={() => setAirportDropoffMonth(new Date(airportDropoffMonth.getFullYear(), airportDropoffMonth.getMonth() + 1, 1))}
+                                    className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                  >
+                                    <ChevronRight size={20} className="text-gray-600" />
+                                  </button>
+                                </div>
+
+                                {/* Calendar Grid */}
+                                <div className="grid grid-cols-7 gap-1 text-center">
+                                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                                    <div key={day} className="text-xs font-semibold text-gray-500 py-2">
+                                      {day}
+                                    </div>
+                                  ))}
+                                  {Array.from({ length: new Date(airportDropoffMonth.getFullYear(), airportDropoffMonth.getMonth() + 1, 0).getDate() }, (_, i) => {
+                                    const date = new Date(airportDropoffMonth.getFullYear(), airportDropoffMonth.getMonth(), i + 1);
+                                    const isPast = date < new Date().setHours(0, 0, 0, 0);
+                                    const isSelected = airportDropoffDate && date.toDateString() === airportDropoffDate.toDateString();
+                                    return (
+                                      <div
+                                        key={i}
+                                        onClick={() => {
+                                          if (!isPast) {
+                                            setAirportDropoffDate(date);
+                                            setShowAirportDropoffCalendar(false);
+                                          }
+                                        }}
+                                        className={`py-2 text-sm rounded-lg cursor-pointer transition-all ${
+                                          isPast
+                                            ? 'text-gray-300 cursor-not-allowed'
+                                            : isSelected
+                                            ? 'bg-orange-500 text-white font-semibold'
+                                            : 'hover:bg-orange-100 text-gray-700'
+                                        }`}
+                                      >
+                                        {i + 1}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Passenger */}
+                          <div className="relative">
+                            <div 
+                              className="bg-white rounded-lg p-3 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400 cursor-pointer"
+                              onClick={() => setShowAirportDropoffPassenger(!showAirportDropoffPassenger)}
+                            >
+                              <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Passenger</label>
+                              <div className="flex items-center gap-2 mt-1">
+                                <Users size={16} style={{ color: ORANGE }} />
+                                <span className="font-semibold text-gray-800 text-sm">{airportDropoffAdults + airportDropoffChildren}</span>
+                                <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                              </div>
+                            </div>
+
+                            {/* Passenger Dropdown */}
+                            {showAirportDropoffPassenger && (
+                              <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-64 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                                {/* Adults */}
+                                <div className="flex items-center justify-between mb-3">
+                                  <div>
+                                    <div className="font-semibold text-gray-800 text-sm">Adults</div>
+                                    <div className="text-xs text-gray-500">12+ years</div>
+                                  </div>
+                                  <div className="flex items-center gap-3">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (airportDropoffAdults > 1) setAirportDropoffAdults(airportDropoffAdults - 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">-</span>
+                                    </button>
+                                    <span className="font-semibold text-gray-800 w-6 text-center">{airportDropoffAdults}</span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setAirportDropoffAdults(airportDropoffAdults + 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">+</span>
+                                    </button>
+                                  </div>
+                                </div>
+
+                                {/* Children */}
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <div className="font-semibold text-gray-800 text-sm">Children</div>
+                                    <div className="text-xs text-gray-500">2-11 years</div>
+                                  </div>
+                                  <div className="flex items-center gap-3">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (airportDropoffChildren > 0) setAirportDropoffChildren(airportDropoffChildren - 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">-</span>
+                                    </button>
+                                    <span className="font-semibold text-gray-800 w-6 text-center">{airportDropoffChildren}</span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setAirportDropoffChildren(airportDropoffChildren + 1);
+                                      }}
+                                      className="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-orange-400 hover:bg-orange-50 transition-all flex items-center justify-center"
+                                    >
+                                      <span className="text-gray-600 font-bold">+</span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Search Button */}
+                        <button className="text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
+                          <Search size={18} /> Search
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
@@ -1429,7 +2096,7 @@ const Header = () => {
                 <div className="flex gap-3">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
                     {/* From */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">From</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
@@ -1443,7 +2110,7 @@ const Header = () => {
                     </div>
 
                     {/* To */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">To</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
@@ -1456,7 +2123,7 @@ const Header = () => {
                     </div>
 
                     {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowCalendar(!showCalendar)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowCalendar(!showCalendar)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Departure - Return</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Calendar size={16} style={{ color: ORANGE }} />
@@ -1642,7 +2309,7 @@ const Header = () => {
                     </div>
 
                     {/* Passengers */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPassengerDropdown(!showPassengerDropdown)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPassengerDropdown(!showPassengerDropdown)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Passengers</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Users size={16} style={{ color: ORANGE }} />
@@ -1739,7 +2406,7 @@ const Header = () => {
                     </div>
 
                     {/* Class */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowClassDropdown(!showClassDropdown)}>
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowClassDropdown(!showClassDropdown)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Class</label>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="font-semibold text-gray-800 text-sm">{selectedClass}</span>
@@ -1797,7 +2464,7 @@ const Header = () => {
                     <div className="flex gap-3">
                       <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
                         {/* Destination */}
-                        <div className="md:col-span-2 bg-gray-50 rounded-lg p-5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                        <div className="md:col-span-2 bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                           <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Destination</label>
                           <div className="flex items-center gap-2 mt-1">
                             <MapPin size={16} style={{ color: ORANGE }} />
@@ -1810,7 +2477,7 @@ const Header = () => {
                         </div>
 
                         {/* Dates */}
-                        <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelCalendar(!showHotelCalendar)}>
+                        <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelCalendar(!showHotelCalendar)}>
                           <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Check-in - Check-out</label>
                           <div className="flex items-center gap-2 mt-1">
                             <Calendar size={16} style={{ color: ORANGE }} />
@@ -2001,7 +2668,7 @@ const Header = () => {
                         </div>
 
                         {/* Rooms & Guests */}
-                        <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelGuestsDropdown(!showHotelGuestsDropdown)}>
+                        <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelGuestsDropdown(!showHotelGuestsDropdown)}>
                           <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Rooms & Guests</label>
                           <div className="flex items-center gap-2 mt-1">
                             <Users size={16} style={{ color: ORANGE }} />
@@ -2109,7 +2776,7 @@ const Header = () => {
                         </div>
 
                         {/* Price per Night */}
-                        <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPriceDropdown(!showPriceDropdown)}>
+                        <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPriceDropdown(!showPriceDropdown)}>
                           <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Price per Night</label>
                           <div className="flex items-center gap-2 mt-1">
                             <IndianRupee size={16} style={{ color: ORANGE }} />
@@ -2175,7 +2842,7 @@ const Header = () => {
                   </div>
 
                   {/* Search Button */}
-                  <button className="text-white px-8 py-3 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap ml-auto" style={{ backgroundColor: ORANGE }}>
+                  <button className="text-white px-8 py-2 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap ml-auto" style={{ backgroundColor: ORANGE }}>
                     <Search size={20} /> Search
                   </button>
                 </div>
@@ -2187,7 +2854,7 @@ const Header = () => {
                 <div className="flex gap-3">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1">
                     {/* Destination */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Destination</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
@@ -2200,7 +2867,7 @@ const Header = () => {
                     </div>
 
                     {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Date</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Calendar size={16} style={{ color: ORANGE }} />
@@ -2209,7 +2876,7 @@ const Header = () => {
                     </div>
 
                     {/* Tickets */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer">
+                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Tickets</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Users size={16} style={{ color: ORANGE }} />
