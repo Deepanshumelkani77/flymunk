@@ -70,6 +70,7 @@ const Header = () => {
   const [hotelRoomType, setHotelRoomType] = useState('upto4rooms');
   const [showPriceDropdown, setShowPriceDropdown] = useState(false);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
+  const [showHotelSearch, setShowHotelSearch] = useState(false);
 
   // Sync return month to always be next month of departure month
   useEffect(() => {
@@ -1297,8 +1298,82 @@ const Header = () => {
 
             {activeTab === 'flight-hotel' && (
               <div className="space-y-3">
+                {/* Trip Type Selection */}
+                <div className="flex gap-2 flex-wrap items-center">
+                  <button 
+                    onClick={() => setTripType('roundTrip')}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                      tripType === 'roundTrip' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={tripType === 'roundTrip' ? { backgroundColor: NAVY } : {}}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M5 12l6-6M5 12l6 6"/>
+                    </svg>
+                    Round Trip
+                  </button>
+                  <button 
+                    onClick={() => setTripType('oneWay')}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                      tripType === 'oneWay' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={tripType === 'oneWay' ? { backgroundColor: NAVY } : {}}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M5 12l6-6M5 12l6 6"/>
+                    </svg>
+                    One Way
+                  </button>
+                  <button 
+                    onClick={() => setTripType('multiCity')}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                      tripType === 'multiCity' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={tripType === 'multiCity' ? { backgroundColor: NAVY } : {}}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="4" cy="12" r="2"/>
+                      <circle cx="12" cy="6" r="2"/>
+                      <circle cx="20" cy="12" r="2"/>
+                      <circle cx="12" cy="18" r="2"/>
+                      <path d="M6 11l4-3M14 7l4 3M18 13l-4 3M10 17l-4-3"/>
+                    </svg>
+                    Multi-City
+                  </button>
+                  
+                  {/* Direct Checkbox */}
+                  <div className="flex ml-15 items-center gap-2 px-3 py-1.5 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-all cursor-pointer">
+                    <input type="checkbox" id="direct-fh" className="w-4 h-4 accent-orange-500 cursor-pointer" />
+                    <label htmlFor="direct-fh" className="text-sm font-medium text-gray-700 cursor-pointer select-none">Direct flights </label>
+                  </div>
+
+                  {/* Group Trip Checkbox */}
+                  <div className="flex ml-5 items-center gap-2 px-3 py-1.5 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-all cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      id="groupTrip-fh" 
+                      checked={isGroupTrip}
+                      onChange={(e) => {
+                        setIsGroupTrip(e.target.checked);
+                        if (e.target.checked) {
+                          setAdults(5);
+                          setChildren(0);
+                          setInfants(0);
+                        } else {
+                          setAdults(1);
+                          setChildren(0);
+                          setInfants(0);
+                        }
+                      }}
+                      className="w-4 h-4 accent-orange-500 cursor-pointer" 
+                    />
+                    <label htmlFor="groupTrip-fh" className="text-sm font-medium text-gray-700 cursor-pointer select-none">Group Trip </label>
+                  </div>
+                </div>
+
+                {/* Search Inputs */}
                 <div className="flex gap-3">
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3 flex-1">
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
                     {/* From */}
                     <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">From</label>
@@ -1308,6 +1383,7 @@ const Header = () => {
                           type="text"
                           placeholder="City or Airport"
                           className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                          defaultValue="New Delhi"
                         />
                       </div>
                     </div>
@@ -1326,27 +1402,727 @@ const Header = () => {
                     </div>
 
                     {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowCalendar(!showCalendar)}>
                       <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Departure - Return</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Calendar size={16} style={{ color: ORANGE }} />
-                        <span className="font-semibold text-gray-800 text-sm">Jul 16 - Jul 17</span>
+                        <div className="flex items-center gap-4">
+                          <span className="font-semibold text-gray-800 text-sm">
+                            {new Date(departureDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </span>
+                          <span className="text-gray-400">-</span>
+                          <span className="font-semibold text-gray-800 text-sm">
+                            {new Date(returnDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </span>
+                        </div>
+                        <ChevronDown size={14} className="text-gray-400 ml-auto" />
                       </div>
+
+                      {/* Calendar Popup */}
+                      {showCalendar && (
+                        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 w-[600px]">
+                          <div className="flex items-center gap-4">
+                            {/* Decrease Month Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDepartureMonth(new Date(departureMonth.getFullYear(), departureMonth.getMonth() - 1, 1));
+                              }}
+                              className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                            >
+                              <ChevronDown size={16} className="text-gray-600 rotate-90" />
+                            </button>
+                            
+                            <div className="grid grid-cols-2 gap-4 flex-1">
+                              {/* Departure Calendar */}
+                              <div>
+                                <div className="flex items-center justify-center mb-3">
+                                  <h3 className="font-semibold text-gray-800 text-sm">
+                                    {departureMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                  </h3>
+                                </div>
+                              <div className="grid grid-cols-7 gap-1 text-center text-xs">
+                                <div className="text-gray-500 font-medium">Su</div>
+                                <div className="text-gray-500 font-medium">Mo</div>
+                                <div className="text-gray-500 font-medium">Tu</div>
+                                <div className="text-gray-500 font-medium">We</div>
+                                <div className="text-gray-500 font-medium">Th</div>
+                                <div className="text-gray-500 font-medium">Fr</div>
+                                <div className="text-gray-500 font-medium">Sa</div>
+                              </div>
+                              <div className="grid grid-cols-7 gap-1 text-center text-xs mt-2">
+                                {Array.from({ length: 42 }, (_, i) => {
+                                  const firstDayOfMonth = new Date(departureMonth.getFullYear(), departureMonth.getMonth(), 1);
+                                  const startDay = firstDayOfMonth.getDay();
+                                  const day = i - startDay + 1;
+                                  const date = new Date(departureMonth.getFullYear(), departureMonth.getMonth(), day);
+                                  const isCurrentMonth = date.getMonth() === departureMonth.getMonth();
+                                  const formatDate = (d) => {
+                                    const year = d.getFullYear();
+                                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                                    const dayNum = String(d.getDate()).padStart(2, '0');
+                                    return `${year}-${month}-${dayNum}`;
+                                  };
+                                  const isSelected = formatDate(date) === departureDate;
+                                  const isReturnSelected = formatDate(date) === returnDate;
+                                  const isInRange = departureDate && returnDate && 
+                                    formatDate(date) >= departureDate && formatDate(date) <= returnDate;
+                                  const isHovered = hoveredDate && formatDate(date) >= departureDate && formatDate(date) <= hoveredDate;
+                                  const isPast = date < new Date(new Date().setHours(0,0,0,0));
+                                  return (
+                                    <div
+                                      key={i}
+                                      className={`p-2 rounded-lg cursor-pointer transition-all ${
+                                        !isCurrentMonth || isPast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-700 hover:bg-orange-100'
+                                      } ${isSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''} ${
+                                        isReturnSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''
+                                      } ${isHovered && isCurrentMonth && !isPast ? 'bg-orange-200' : ''} ${
+                                        isInRange && isCurrentMonth && !isPast ? 'bg-orange-200' : ''
+                                      }`}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (isCurrentMonth && !isPast) {
+                                          if (!departureDate || departureDate && returnDate) {
+                                            setDepartureDate(formatDate(date));
+                                            setReturnDate(null);
+                                          } else {
+                                            setReturnDate(formatDate(date));
+                                            setShowCalendar(false);
+                                          }
+                                        }
+                                      }}
+                                      onMouseEnter={() => {
+                                        if (isCurrentMonth && !isPast && departureDate && !returnDate) setHoveredDate(formatDate(date));
+                                      }}
+                                      onMouseLeave={() => {
+                                        setHoveredDate(null);
+                                      }}
+                                    >
+                                      {date.getDate()}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Return Calendar */}
+                            <div>
+                              <div className="flex items-center justify-center mb-3">
+                                <h3 className="font-semibold text-gray-800 text-sm">
+                                  {returnMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                </h3>
+                              </div>
+                              <div className="grid grid-cols-7 gap-1 text-center text-xs">
+                                <div className="text-gray-500 font-medium">Su</div>
+                                <div className="text-gray-500 font-medium">Mo</div>
+                                <div className="text-gray-500 font-medium">Tu</div>
+                                <div className="text-gray-500 font-medium">We</div>
+                                <div className="text-gray-500 font-medium">Th</div>
+                                <div className="text-gray-500 font-medium">Fr</div>
+                                <div className="text-gray-500 font-medium">Sa</div>
+                              </div>
+                              <div className="grid grid-cols-7 gap-1 text-center text-xs mt-2">
+                                {Array.from({ length: 42 }, (_, i) => {
+                                  const firstDayOfMonth = new Date(returnMonth.getFullYear(), returnMonth.getMonth(), 1);
+                                  const startDay = firstDayOfMonth.getDay();
+                                  const day = i - startDay + 1;
+                                  const date = new Date(returnMonth.getFullYear(), returnMonth.getMonth(), day);
+                                  const isCurrentMonth = date.getMonth() === returnMonth.getMonth();
+                                  const formatDate = (d) => {
+                                    const year = d.getFullYear();
+                                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                                    const dayNum = String(d.getDate()).padStart(2, '0');
+                                    return `${year}-${month}-${dayNum}`;
+                                  };
+                                  const isSelected = formatDate(date) === departureDate;
+                                  const isReturnSelected = formatDate(date) === returnDate;
+                                  const isInRange = departureDate && returnDate && 
+                                    formatDate(date) >= departureDate && formatDate(date) <= returnDate;
+                                  const isHovered = hoveredDate && formatDate(date) >= departureDate && formatDate(date) <= hoveredDate;
+                                  const isPast = date < new Date(new Date().setHours(0,0,0,0));
+                                  return (
+                                    <div
+                                      key={i}
+                                      className={`p-2 rounded-lg cursor-pointer transition-all ${
+                                        !isCurrentMonth || isPast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-700 hover:bg-orange-100'
+                                      } ${isSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''} ${
+                                        isReturnSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''
+                                      } ${isHovered && isCurrentMonth && !isPast ? 'bg-orange-200' : ''} ${
+                                        isInRange && isCurrentMonth && !isPast ? 'bg-orange-200' : ''
+                                      }`}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (isCurrentMonth && !isPast) {
+                                          setReturnDate(formatDate(date));
+                                          setShowCalendar(false);
+                                        }
+                                      }}
+                                      onMouseEnter={() => {
+                                        if (isCurrentMonth && !isPast && departureDate && !returnDate) setHoveredDate(formatDate(date));
+                                      }}
+                                      onMouseLeave={() => {
+                                        setHoveredDate(null);
+                                      }}
+                                    >
+                                      {date.getDate()}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                            </div>
+                            
+                            {/* Increase Month Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDepartureMonth(new Date(departureMonth.getFullYear(), departureMonth.getMonth() + 1, 1));
+                              }}
+                              className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                            >
+                              <ChevronDown size={16} className="text-gray-600 -rotate-90" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
-                    {/* Guests */}
-                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer">
-                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Guests & Rooms</label>
+                    {/* Passengers */}
+                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPassengerDropdown(!showPassengerDropdown)}>
+                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Passengers</label>
                       <div className="flex items-center gap-2 mt-1">
                         <Users size={16} style={{ color: ORANGE }} />
-                        <span className="font-semibold text-gray-800 text-sm">2 Adults, 1 Room</span>
+                        <span className="font-semibold text-gray-800 text-sm">
+                          {adults} Adult{adults !== 1 ? 's' : ''}{children > 0 ? `, ${children} Child${children !== 1 ? 'ren' : ''}` : ''}{infants > 0 ? `, ${infants} Infant${infants !== 1 ? 's' : ''}` : ''}
+                        </span>
+                        <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                      </div>
+
+                      {/* Passenger Dropdown */}
+                      {showPassengerDropdown && (
+                        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 w-[320px]">
+                          <div className="space-y-4">
+                            {/* Adults */}
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div className="font-medium text-gray-800 text-sm">Adults</div>
+                                <div className="text-xs text-gray-500">12+ years</div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setAdults(Math.max(1, adults - 1)); }}
+                                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                >
+                                  -
+                                </button>
+                                <span className="font-semibold text-gray-800 w-6 text-center">{adults}</span>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setAdults(adults + 1); }}
+                                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Children */}
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div className="font-medium text-gray-800 text-sm">Children</div>
+                                <div className="text-xs text-gray-500">2-11 years</div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setChildren(Math.max(0, children - 1)); }}
+                                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                >
+                                  -
+                                </button>
+                                <span className="font-semibold text-gray-800 w-6 text-center">{children}</span>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setChildren(children + 1); }}
+                                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Infants */}
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div className="font-medium text-gray-800 text-sm">Infants on lap</div>
+                                <div className="text-xs text-gray-500">Under 2 years</div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setInfants(Math.max(0, infants - 1)); }}
+                                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                >
+                                  -
+                                </button>
+                                <span className="font-semibold text-gray-800 w-6 text-center">{infants}</span>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setInfants(infants + 1); }}
+                                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Done Button */}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setShowPassengerDropdown(false); }}
+                            className="w-full mt-4 py-3 rounded-lg font-bold text-white transition-all hover:shadow-lg"
+                            style={{ backgroundColor: LIGHT_ORANGE }}
+                          >
+                            Done
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Class */}
+                    <div className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowClassDropdown(!showClassDropdown)}>
+                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Class</label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="font-semibold text-gray-800 text-sm">{selectedClass}</span>
+                        <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                      </div>
+
+                      {/* Class Dropdown */}
+                      {showClassDropdown && (
+                        <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 w-[320px]">
+                          <div className="space-y-2">
+                            {[
+                              { name: 'Economy', desc: 'Best value fares' },
+                              { name: 'Economy/Premium Economy', desc: 'Extra comfort' },
+                              { name: 'Premium Economy', desc: 'Enhanced experience' },
+                              { name: 'Business/First', desc: 'Luxury combined' },
+                              { name: 'Business', desc: 'Premium service' },
+                              { name: 'First', desc: 'Ultimate luxury' }
+                            ].map((classOption) => (
+                              <button
+                                key={classOption.name}
+                                onClick={(e) => { e.stopPropagation(); setSelectedClass(classOption.name); setShowClassDropdown(false); }}
+                                className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3 border-2 ${
+                                  selectedClass === classOption.name
+                                    ? 'bg-orange-50 border-orange-400 shadow-md'
+                                    : 'hover:bg-gray-50 border-transparent'
+                                }`}
+                              >
+                                <div className="flex-1">
+                                  <div className={`text-sm font-semibold ${
+                                    selectedClass === classOption.name ? 'text-orange-600' : 'text-gray-800'
+                                  }`}>
+                                    {classOption.name}
+                                  </div>
+                                  <div className="text-xs text-gray-500">{classOption.desc}</div>
+                                </div>
+                                {selectedClass === classOption.name && (
+                                  <div className="w-6 h-6 rounded-full bg-orange-500 shadow-sm flex items-center justify-center">
+                                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  </div>
+                                )}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hotel Search Content - Show when checkbox is selected */}
+                {showHotelSearch && (
+                  <div className="space-y-3 pt-3 border-t border-gray-200">
+                    <div className="flex gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
+                        {/* Destination */}
+                        <div className="md:col-span-2 bg-gray-50 rounded-lg p-5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Destination</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <MapPin size={16} style={{ color: ORANGE }} />
+                            <input
+                              type="text"
+                              placeholder="City, hotel, or landmark"
+                              className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Dates */}
+                        <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelCalendar(!showHotelCalendar)}>
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Check-in - Check-out</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Calendar size={16} style={{ color: ORANGE }} />
+                            <div className="flex items-center gap-4">
+                              <span className="font-semibold text-gray-800 text-sm">
+                                {hotelCheckInDate ? new Date(hotelCheckInDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Add date'}
+                              </span>
+                              <span className="text-gray-400">-</span>
+                              <span className="font-semibold text-gray-800 text-sm">
+                                {hotelCheckOutDate ? new Date(hotelCheckOutDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Add date'}
+                              </span>
+                            </div>
+                            {hotelCheckInDate && hotelCheckOutDate && (
+                              <span className="bg-orange-100 text-orange-600 px-2 py-0.5 rounded text-[10px] font-semibold ml-auto">
+                                {Math.ceil((new Date(hotelCheckOutDate) - new Date(hotelCheckInDate)) / (1000 * 60 * 60 * 24))} night{Math.ceil((new Date(hotelCheckOutDate) - new Date(hotelCheckInDate)) / (1000 * 60 * 60 * 24)) !== 1 ? 's' : ''}
+                              </span>
+                            )}
+                            <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                          </div>
+
+                          {/* Hotel Calendar Popup */}
+                          {showHotelCalendar && (
+                            <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 w-[600px]">
+                              <div className="flex items-center gap-4">
+                                {/* Decrease Month Button */}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setHotelDepartureMonth(new Date(hotelDepartureMonth.getFullYear(), hotelDepartureMonth.getMonth() - 1, 1));
+                                  }}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronDown size={16} className="text-gray-600 rotate-90" />
+                                </button>
+                                
+                                <div className="grid grid-cols-2 gap-4 flex-1">
+                                  {/* Check-in Calendar */}
+                                  <div>
+                                    <div className="flex items-center justify-center mb-3">
+                                      <h3 className="font-semibold text-gray-800 text-sm">
+                                        {hotelDepartureMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                      </h3>
+                                    </div>
+                                    <div className="grid grid-cols-7 gap-1 text-center text-xs">
+                                      <div className="text-gray-500 font-medium">Su</div>
+                                      <div className="text-gray-500 font-medium">Mo</div>
+                                      <div className="text-gray-500 font-medium">Tu</div>
+                                      <div className="text-gray-500 font-medium">We</div>
+                                      <div className="text-gray-500 font-medium">Th</div>
+                                      <div className="text-gray-500 font-medium">Fr</div>
+                                      <div className="text-gray-500 font-medium">Sa</div>
+                                    </div>
+                                    <div className="grid grid-cols-7 gap-1 text-center text-xs mt-2">
+                                      {Array.from({ length: 42 }, (_, i) => {
+                                        const firstDayOfMonth = new Date(hotelDepartureMonth.getFullYear(), hotelDepartureMonth.getMonth(), 1);
+                                        const startDay = firstDayOfMonth.getDay();
+                                        const day = i - startDay + 1;
+                                        const date = new Date(hotelDepartureMonth.getFullYear(), hotelDepartureMonth.getMonth(), day);
+                                        const isCurrentMonth = date.getMonth() === hotelDepartureMonth.getMonth();
+                                        const formatDate = (d) => {
+                                          const year = d.getFullYear();
+                                          const month = String(d.getMonth() + 1).padStart(2, '0');
+                                          const dayNum = String(d.getDate()).padStart(2, '0');
+                                          return `${year}-${month}-${dayNum}`;
+                                        };
+                                        const isCheckInSelected = formatDate(date) === hotelCheckInDate;
+                                        const isCheckOutSelected = formatDate(date) === hotelCheckOutDate;
+                                        const isInRange = hotelCheckInDate && hotelCheckOutDate && 
+                                          formatDate(date) >= hotelCheckInDate && formatDate(date) <= hotelCheckOutDate;
+                                        const isHovered = hotelHoveredDate && formatDate(date) >= hotelCheckInDate && formatDate(date) <= hotelHoveredDate;
+                                        const isPast = date < new Date(new Date().setHours(0,0,0,0));
+                                        return (
+                                          <div
+                                            key={i}
+                                            className={`p-2 rounded-lg cursor-pointer transition-all ${
+                                              !isCurrentMonth || isPast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-700 hover:bg-orange-100'
+                                            } ${isCheckInSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''} ${
+                                              isCheckOutSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''
+                                            } ${isHovered && isCurrentMonth && !isPast ? 'bg-orange-200' : ''} ${
+                                              isInRange && isCurrentMonth && !isPast ? 'bg-orange-200' : ''
+                                            }`}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              if (isCurrentMonth && !isPast) {
+                                                if (!hotelCheckInDate || hotelCheckInDate && hotelCheckOutDate) {
+                                                  setHotelCheckInDate(formatDate(date));
+                                                  setHotelCheckOutDate(null);
+                                                } else {
+                                                  setHotelCheckOutDate(formatDate(date));
+                                                  setShowHotelCalendar(false);
+                                                }
+                                              }
+                                            }}
+                                            onMouseEnter={() => {
+                                              if (isCurrentMonth && !isPast && hotelCheckInDate && !hotelCheckOutDate) setHotelHoveredDate(formatDate(date));
+                                            }}
+                                            onMouseLeave={() => {
+                                              setHotelHoveredDate(null);
+                                            }}
+                                          >
+                                            {date.getDate()}
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+
+                                  {/* Check-out Calendar */}
+                                  <div>
+                                    <div className="flex items-center justify-center mb-3">
+                                      <h3 className="font-semibold text-gray-800 text-sm">
+                                        {hotelReturnMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                      </h3>
+                                    </div>
+                                    <div className="grid grid-cols-7 gap-1 text-center text-xs">
+                                      <div className="text-gray-500 font-medium">Su</div>
+                                      <div className="text-gray-500 font-medium">Mo</div>
+                                      <div className="text-gray-500 font-medium">Tu</div>
+                                      <div className="text-gray-500 font-medium">We</div>
+                                      <div className="text-gray-500 font-medium">Th</div>
+                                      <div className="text-gray-500 font-medium">Fr</div>
+                                      <div className="text-gray-500 font-medium">Sa</div>
+                                    </div>
+                                    <div className="grid grid-cols-7 gap-1 text-center text-xs mt-2">
+                                      {Array.from({ length: 42 }, (_, i) => {
+                                        const firstDayOfMonth = new Date(hotelReturnMonth.getFullYear(), hotelReturnMonth.getMonth(), 1);
+                                        const startDay = firstDayOfMonth.getDay();
+                                        const day = i - startDay + 1;
+                                        const date = new Date(hotelReturnMonth.getFullYear(), hotelReturnMonth.getMonth(), day);
+                                        const isCurrentMonth = date.getMonth() === hotelReturnMonth.getMonth();
+                                        const formatDate = (d) => {
+                                          const year = d.getFullYear();
+                                          const month = String(d.getMonth() + 1).padStart(2, '0');
+                                          const dayNum = String(d.getDate()).padStart(2, '0');
+                                          return `${year}-${month}-${dayNum}`;
+                                        };
+                                        const isCheckInSelected = formatDate(date) === hotelCheckInDate;
+                                        const isCheckOutSelected = formatDate(date) === hotelCheckOutDate;
+                                        const isInRange = hotelCheckInDate && hotelCheckOutDate && 
+                                          formatDate(date) >= hotelCheckInDate && formatDate(date) <= hotelCheckOutDate;
+                                        const isHovered = hotelHoveredDate && formatDate(date) >= hotelCheckInDate && formatDate(date) <= hotelHoveredDate;
+                                        const isPast = date < new Date(new Date().setHours(0,0,0,0));
+                                        return (
+                                          <div
+                                            key={i}
+                                            className={`p-2 rounded-lg cursor-pointer transition-all ${
+                                              !isCurrentMonth || isPast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-700 hover:bg-orange-100'
+                                            } ${isCheckInSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''} ${
+                                              isCheckOutSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''
+                                            } ${isHovered && isCurrentMonth && !isPast ? 'bg-orange-200' : ''} ${
+                                              isInRange && isCurrentMonth && !isPast ? 'bg-orange-200' : ''
+                                            }`}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              if (isCurrentMonth && !isPast) {
+                                                setHotelCheckOutDate(formatDate(date));
+                                                setShowHotelCalendar(false);
+                                              }
+                                            }}
+                                            onMouseEnter={() => {
+                                              if (isCurrentMonth && !isPast && hotelCheckInDate && !hotelCheckOutDate) setHotelHoveredDate(formatDate(date));
+                                            }}
+                                            onMouseLeave={() => {
+                                              setHotelHoveredDate(null);
+                                            }}
+                                          >
+                                            {date.getDate()}
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Increase Month Button */}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setHotelDepartureMonth(new Date(hotelDepartureMonth.getFullYear(), hotelDepartureMonth.getMonth() + 1, 1));
+                                  }}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronDown size={16} className="text-gray-600 -rotate-90" />
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Rooms & Guests */}
+                        <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowHotelGuestsDropdown(!showHotelGuestsDropdown)}>
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Rooms & Guests</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Users size={16} style={{ color: ORANGE }} />
+                            <span className="font-semibold text-gray-800 text-sm">
+                              {hotelRooms} Room{hotelRooms !== 1 ? 's' : ''}, {hotelAdults} Adult{hotelAdults !== 1 ? 's' : ''}{hotelChildren > 0 && `, ${hotelChildren} Child${hotelChildren !== 1 ? 'ren' : ''}`}
+                            </span>
+                            {travelingWithPet && <PawPrint size={14} className="text-orange-500 ml-1" />}
+                            <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                          </div>
+
+                          {/* Hotel Guests Dropdown */}
+                          {showHotelGuestsDropdown && (
+                            <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 w-[320px]">
+                              {/* Rooms */}
+                              <div className="flex items-center justify-between mb-4">
+                                <div>
+                                  <div className="font-semibold text-gray-800 text-sm">Rooms</div>
+                                  <div className="text-xs text-gray-500">Number of rooms</div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setHotelRooms(Math.max(1, hotelRooms - 1)); }}
+                                    className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                  >
+                                    -
+                                  </button>
+                                  <span className="font-semibold text-gray-800 w-6 text-center">{hotelRooms}</span>
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setHotelRooms(hotelRooms + 1); }}
+                                    className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Adults */}
+                              <div className="flex items-center justify-between mb-4">
+                                <div>
+                                  <div className="font-semibold text-gray-800 text-sm">Adults</div>
+                                  <div className="text-xs text-gray-500">18+ years</div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setHotelAdults(Math.max(1, hotelAdults - 1)); }}
+                                    className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                  >
+                                    -
+                                  </button>
+                                  <span className="font-semibold text-gray-800 w-6 text-center">{hotelAdults}</span>
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setHotelAdults(hotelAdults + 1); }}
+                                    className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Children */}
+                              <div className="flex items-center justify-between mb-4">
+                                <div>
+                                  <div className="font-semibold text-gray-800 text-sm">Children</div>
+                                  <div className="text-xs text-gray-500">0-17 years</div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setHotelChildren(Math.max(0, hotelChildren - 1)); }}
+                                    className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                  >
+                                    -
+                                  </button>
+                                  <span className="font-semibold text-gray-800 w-6 text-center">{hotelChildren}</span>
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); setHotelChildren(hotelChildren + 1); }}
+                                    className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-500 transition-all font-bold"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Pet Checkbox */}
+                              <div className="flex items-center gap-2 mb-4">
+                                <input
+                                  type="checkbox"
+                                  id="pet"
+                                  checked={travelingWithPet}
+                                  onChange={(e) => { e.stopPropagation(); setTravelingWithPet(e.target.checked); }}
+                                  className="w-4 h-4 accent-orange-500 cursor-pointer"
+                                />
+                                <label htmlFor="pet" className="text-sm font-medium text-gray-700 cursor-pointer select-none">Traveling with pet?</label>
+                              </div>
+
+                              {/* Done Button */}
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setShowHotelGuestsDropdown(false); }}
+                                className="w-full mt-4 py-2.5 rounded-lg font-semibold text-white transition-all hover:shadow-lg"
+                                style={{ backgroundColor: ORANGE }}
+                              >
+                                Done
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Price per Night */}
+                        <div className="bg-gray-50 rounded-lg p-1.5 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer relative" onClick={() => setShowPriceDropdown(!showPriceDropdown)}>
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Price per Night</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <IndianRupee size={16} style={{ color: ORANGE }} />
+                            <span className="font-semibold text-gray-800 text-sm">
+                              {selectedPriceRange || 'Select price'}
+                            </span>
+                            <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                          </div>
+
+                          {/* Price Dropdown */}
+                          {showPriceDropdown && (
+                            <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 w-[280px]">
+                              <div className="space-y-2">
+                                {[
+                                  { label: '₹0 - ₹1500', value: '₹0-₹1500' },
+                                  { label: '₹1500 - ₹2500', value: '₹1500-₹2500' },
+                                  { label: '₹2500 - ₹5000', value: '₹2500-₹5000' },
+                                  { label: '₹5000+', value: '₹5000+' }
+                                ].map((price) => (
+                                  <button
+                                    key={price.value}
+                                    onClick={(e) => { e.stopPropagation(); setSelectedPriceRange(price.label); setShowPriceDropdown(false); }}
+                                    className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center justify-between ${
+                                      selectedPriceRange === price.label
+                                        ? 'bg-orange-50 border-2 border-orange-400'
+                                        : 'hover:bg-gray-50 border-2 border-transparent'
+                                    }`}
+                                  >
+                                    <span className={`text-sm font-medium ${
+                                      selectedPriceRange === price.label ? 'text-orange-600' : 'text-gray-800'
+                                    }`}>
+                                      {price.label}
+                                    </span>
+                                    {selectedPriceRange === price.label && (
+                                      <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center">
+                                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                      </div>
+                                    )}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
+                )}
+
+                {/* Find Hotels Checkbox and Search Button */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-all cursor-pointer w-fit">
+                    <input 
+                      type="checkbox" 
+                      id="findHotels" 
+                      checked={showHotelSearch}
+                      onChange={(e) => setShowHotelSearch(e.target.checked)}
+                      className="w-4 h-4 accent-orange-500 cursor-pointer" 
+                    />
+                    <label htmlFor="findHotels" className="text-sm font-medium text-gray-700 cursor-pointer select-none">Find hotels in other cities/for different dates</label>
+                  </div>
 
                   {/* Search Button */}
-                  <button className="text-white px-8 py-3 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
-                    <Search size={18} /> Search
+                  <button className="text-white px-8 py-3 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap ml-auto" style={{ backgroundColor: ORANGE }}>
+                    <Search size={20} /> Search
                   </button>
                 </div>
               </div>
