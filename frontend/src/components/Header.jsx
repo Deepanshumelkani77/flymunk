@@ -2874,44 +2874,25 @@ Airport Pick-up
             )}
 
             {activeTab === 'attractions' && (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div className="flex gap-3">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1">
-                    {/* Destination */}
+                  <div className="flex-1">
+                    {/* Search Attraction */}
                     <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
-                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Destination</label>
+                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Locate Attraction & Tour</label>
                       <div className="flex items-center gap-2 mt-1">
                         <MapPin size={16} style={{ color: ORANGE }} />
                         <input
                           type="text"
-                          placeholder="City or attraction"
+                          placeholder="Search attraction"
                           className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
                         />
-                      </div>
-                    </div>
-
-                    {/* Dates */}
-                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200">
-                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Date</label>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Calendar size={16} style={{ color: ORANGE }} />
-                        <span className="font-semibold text-gray-800 text-sm">Jul 16</span>
-                      </div>
-                    </div>
-
-                    {/* Tickets */}
-                    <div className="bg-gray-50 rounded-lg p-2 hover:bg-gray-100 transition-all border-2 border-transparent hover:border-orange-200 cursor-pointer">
-                      <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Tickets</label>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Users size={16} style={{ color: ORANGE }} />
-                        <span className="font-semibold text-gray-800 text-sm">2 Adults</span>
-                        <ChevronDown size={14} className="text-gray-400 ml-auto" />
                       </div>
                     </div>
                   </div>
 
                   {/* Search Button */}
-                  <button className="text-white px-8  rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
+                  <button className="text-white px-8 py-2 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
                     <Search size={18} /> Search
                   </button>
                 </div>
