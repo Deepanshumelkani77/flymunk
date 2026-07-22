@@ -1659,7 +1659,7 @@ const Header = () => {
                             : 'border-gray-200 text-gray-600 bg-white hover:border-orange-300 hover:bg-orange-50'
                         }`}
                       >
-                        <Plane size={14} className={airportTransferType === 'pickup' ? 'text-orange-600' : 'text-gray-500'} /> Airport Pick-up
+Airport Pick-up
                       </button>
                       <button
                         onClick={() => setAirportTransferType('dropoff')}
@@ -1669,7 +1669,7 @@ const Header = () => {
                             : 'border-gray-200 text-gray-600 bg-white hover:border-orange-300 hover:bg-orange-50'
                         }`}
                       >
-                        <Car size={14} className={airportTransferType === 'dropoff' ? 'text-orange-600' : 'text-gray-500'} /> Airport Drop-off
+ Airport Drop-off
                       </button>
                     </div>
 
