@@ -1795,7 +1795,7 @@ const Header = () => {
                         </div>
 
                         {/* Search Button */}
-                        <button className="m-auto text-white px-8 py-4 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-orange-500 to-orange-600" style={{ backgroundColor: ORANGE }}>
+                        <button className="m-auto text-white px-8 py-3 rounded-lg font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-orange-500 to-orange-600" style={{ backgroundColor: ORANGE }}>
                           <Search size={18} /> Search
                         </button>
                       </div>
