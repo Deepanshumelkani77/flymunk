@@ -1,173 +1,464 @@
-import React, { useState, useRef } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import assets from '../assets/assets';
+import React, { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import {
+  Plane,
+  Bed,
+  Car,
+  Ship,
+  Shield,
+  Users,
+  Stamp,
+  Landmark,
+  Menu,
+  Phone,
+  FileText,
+  Mail,
+  Info,
+  PenTool,
+  Building2,
+  X,
+} from 'lucide-react'
+import assets from '../assets/assets.js'
 
-const NAVY = '#02183D'
-const ORANGE = '#FE6101'
+const CURRENCIES = [
+  { code: 'INR', label: 'India', flag: '🇮🇳', countryCode: 'in' },
+  { code: 'USD', label: 'USA', flag: '🇺🇸', countryCode: 'us' },
+  { code: 'GBP', label: 'UK', flag: '🇬🇧', countryCode: 'gb' },
+]
 
-const Offer = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const scrollRef = useRef(null)
+const LANGUAGES = [
+  { code: 'en', label: 'English', countryCode: 'us' },
+  { code: 'hi', label: 'Hindi', countryCode: 'in' },
+  { code: 'es', label: 'Spanish', countryCode: 'es' },
+  { code: 'fr', label: 'French', countryCode: 'fr' },
+  { code: 'de', label: 'German', countryCode: 'de' },
+  { code: 'it', label: 'Italian', countryCode: 'it' },
+  { code: 'pt', label: 'Portuguese', countryCode: 'pt' },
+  { code: 'ru', label: 'Russian', countryCode: 'ru' },
+  { code: 'ja', label: 'Japanese', countryCode: 'jp' },
+  { code: 'ko', label: 'Korean', countryCode: 'kr' },
+  { code: 'zh', label: 'Chinese', countryCode: 'cn' },
+  { code: 'ar', label: 'Arabic', countryCode: 'sa' },
+]
 
-  const offers = [
-    {
-      id: 1,
-      title: 'Summer Sale',
-      subtitle: 'Up to 50% OFF',
-      description: 'Book now and save big on your summer vacation',
-      image: assets.p1,
-      cta: 'Book Now'
-    },
-    {
-      id: 2,
-      title: 'Flight Deals',
-      subtitle: 'Starting from $99',
-      description: 'Domestic flights at unbeatable prices',
-      image: assets.p2,
-      cta: 'Explore'
-    },
-    {
-      id: 3,
-      title: 'Hotel Special',
-      subtitle: 'Free Breakfast',
-      description: 'Stay 3 nights and get complimentary breakfast',
-      image: assets.p3,
-      cta: 'Reserve'
-    },
-    {
-      id: 4,
-      title: 'Weekend Getaway',
-      subtitle: '30% OFF',
-      description: 'Perfect packages for your weekend trips',
-      image: assets.p4,
-      cta: 'View Deals'
-    },
-    {
-      id: 5,
-      title: 'Family Packages',
-      subtitle: 'Kids Stay Free',
-      description: 'Special offers for family vacations',
-      image: assets.p5,
-      cta: 'Learn More'
-    }
-  ]
+const NAVY = '#02173C'
+const ORANGE = '#FF6102'
 
-  const scroll = (direction) => {
-    if (scrollRef.current) {
-      const scrollAmount = scrollRef.current.clientWidth * 0.33
-      scrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      })
-    }
-  }
+// Premium OTA-style palette — each service gets its own solid signature
+// color (like MakeMyTrip / Goibibo icon tiles), rendered as a filled
+// rounded tile with a white glyph rather than a flat grey outline icon.
+const SERVICES = [
+  { id: 'flights', name: 'Flights', icon: Plane, color: '#1D7AFC' },
+  { id: 'hotels', name: 'Hotels', icon: Bed, color: '#8B5CF6' },
+  { id: 'cars', name: 'Cars', icon: Car, color: '#F97316' },
+  { id: 'cruises', name: 'Cruises', icon: Ship, color: '#0891B2' },
+  { id: 'attractions', name: 'Attractions', icon: Landmark, color: '#DB2777' },
+  { id: 'visa', name: 'Visa', icon: Stamp, color: '#DC2626' },
+  { id: 'insurance', name: 'Insurance', icon: Shield, color: '#059669' },
+  { id: 'group-trip', name: 'Group Trip', icon: Users, color: '#4F46E5' },
+]
 
+// Small helper: hex -> rgba, so each badge's tint/hover states derive
+// from a single source color instead of hand-picked pastel classes.
+const hexToRgba = (hex, alpha) => {
+  const h = hex.replace('#', '')
+  const bigint = parseInt(h, 16)
+  const r = (bigint >> 16) & 255
+  const g = (bigint >> 8) & 255
+  const b = bigint & 255
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+const ServiceIcon = ({ service, size = 44, iconSize = 20 }) => {
+  const Icon = service.icon
   return (
-    <div className="w-full py-12 px-4 bg-white">
-      <div className="max-w-8xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight" style={{ color: NAVY }}>
-                 Exclusive offers
-            </h2>
-            <p className="text-gray-500 mt-2 text-lg">Limited time deals you don't want to miss</p>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => scroll('left')}
-              className="w-12 h-12 rounded-xl border-2 flex items-center justify-center hover:shadow-lg transition-all hover:scale-105"
-              style={{ borderColor: '#E5E7EB' }}
-            >
-              <ChevronLeft size={24} className="text-gray-600" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-white hover:shadow-lg transition-all hover:scale-105"
-              style={{ backgroundColor: ORANGE }}
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
-        </div>
-
-        {/* Image Carousel */}
-        <div className="relative">
-          <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth snap-x snap-mandatory"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {offers.map((offer) => (
-              <div
-                key={offer.id}
-                className="flex-shrink-0 w-1/3 snap-start group"
-              >
-                <div className="relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer group-hover:scale-[1.02]">
-                  {/* Image */}
-                  <img
-                    src={offer.image}
-                    alt={offer.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <div className="inline-block px-3 py-1.5 rounded-full text-xs font-bold text-white mb-3" style={{ backgroundColor: ORANGE }}>
-                      {offer.subtitle}
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{offer.title}</h3>
-                    <p className="text-white/90 text-sm mb-4">{offer.description}</p>
-                    <button className="flex items-center gap-2 px-5 py-2.5 bg-white text-gray-900 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-all">
-                      {offer.cta}
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Dots Indicator */}
-        <div className="flex justify-center gap-2 mt-6">
-          {offers.map((_, index) => (
-            <button
-              key={index}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentIndex ? 'w-8' : 'bg-gray-300'
-              }`}
-              style={{ backgroundColor: index === currentIndex ? ORANGE : '' }}
-              onClick={() => {
-                setCurrentIndex(index)
-                if (scrollRef.current) {
-                  scrollRef.current.scrollTo({
-                    left: index * scrollRef.current.clientWidth * 0.33,
-                    behavior: 'smooth'
-                  })
-                }
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+    <div
+      className="flex items-center justify-center rounded-[14px] transition-all duration-300 ease-out group-hover:-translate-y-1"
+      style={{
+        width: size,
+        height: size,
+        background: `linear-gradient(145deg, ${service.color}, ${hexToRgba(service.color, 0.82)})`,
+        boxShadow: `0 4px 10px -3px ${hexToRgba(service.color, 0.45)}`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 10px 20px -6px ${hexToRgba(service.color, 0.6)}`
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = `0 4px 10px -3px ${hexToRgba(service.color, 0.45)}`
+      }}
+    >
+      <Icon size={iconSize} strokeWidth={2} color="#FFFFFF" />
     </div>
   )
 }
 
-export default Offer
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [showMenuDropdown, setShowMenuDropdown] = useState(false)
+  const [currency, setCurrency] = useState(CURRENCIES[0])
+  const [language, setLanguage] = useState(LANGUAGES[0])
+  const [dropdownView, setDropdownView] = useState('currency')
+  const dropdownRef = useRef(null)
+  const menuDropdownRef = useRef(null)
+
+  const menuItems = [
+    { id: 'support', name: 'Customer Support', icon: <Phone size={18} /> },
+    { id: 'bookings', name: 'Find Bookings', icon: <FileText size={18} /> },
+    { id: 'contact', name: 'Contact', icon: <Mail size={18} /> },
+    { id: 'about', name: 'About', icon: <Info size={18} /> },
+    { id: 'blog', name: 'Blog', icon: <PenTool size={18} /> },
+    { id: 'career', name: 'Career', icon: <Building2 size={18} /> },
+  ]
+
+  // Add a shadow once the page has scrolled, so the bar reads as "lifted"
+  // above the content instead of always carrying a heavy shadow.
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Close the currency dropdown when clicking anywhere outside it.
+  useEffect(() => {
+    const onClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowLanguageDropdown(false)
+      }
+      if (menuDropdownRef.current && !menuDropdownRef.current.contains(e.target)) {
+        setShowMenuDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [])
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300 border-b ${
+        isScrolled ? 'shadow-lg border-slate-100' : 'shadow-sm border-transparent'
+      }`}
+    >
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo - Left */}
+          <Link to="/" className="flex items-center group flex-shrink-0">
+            <img
+              src={assets.image3}
+              alt="FlyMunk Logo"
+              className="h-13 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
+
+          {/* Services - Center */}
+          <div className="hidden lg:flex items-center flex-1 justify-center">
+            {SERVICES.map((service) => (
+              <Link
+                key={service.id}
+                to={`/${service.id}`}
+                className="flex flex-col items-center gap-1.5 px-2.5 py-2 rounded-xl font-medium text-sm group"
+                style={{ '--hover-color': service.color }}
+              >
+                <ServiceIcon service={service} />
+                <span
+                  className="text-[12.5px] font-semibold tracking-tight transition-colors duration-200 group-hover:text-[color:var(--hover-color)]"
+                  style={{ color: NAVY }}
+                >
+                  {service.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right Section */}
+          <div className="flex items-center space-x-3">
+            {/* Language & Currency Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded={showLanguageDropdown}
+                className="flex items-center space-x-2 pl-3 pr-2.5 py-2 rounded-lg border transition-colors hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                style={{
+                  borderColor: showLanguageDropdown ? ORANGE : '#E2E8F0',
+                  '--tw-ring-color': ORANGE,
+                }}
+                onClick={() => setShowLanguageDropdown((v) => !v)}
+              >
+                <span className={`fi fi-${currency.countryCode} rounded`}></span>
+                <span className="text-sm font-semibold" style={{ color: NAVY }}>
+                  {currency.code}
+                </span>
+                <svg
+                  className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                    showLanguageDropdown ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {showLanguageDropdown && (
+                <div
+                  role="listbox"
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden"
+                >
+                  {/* Toggle Tabs */}
+                  <div className="flex border-b border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => setDropdownView('currency')}
+                      className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
+                        dropdownView === 'currency'
+                          ? 'text-[#02173C] border-b-2 border-[#02173C] bg-blue-50'
+                          : 'text-slate-500 hover:text-slate-700'
+                      }`}
+                    >
+                      Currency
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDropdownView('language')}
+                      className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
+                        dropdownView === 'language'
+                          ? 'text-[#02173C] border-b-2 border-[#02173C] bg-blue-50'
+                          : 'text-slate-500 hover:text-slate-700'
+                      }`}
+                    >
+                      Language
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="max-h-80 overflow-y-auto">
+                    {dropdownView === 'currency' ? (
+                      <div>
+                        {CURRENCIES.map((c) => (
+                          <button
+                            key={c.code}
+                            type="button"
+                            role="option"
+                            aria-selected={currency.code === c.code}
+                            onClick={() => {
+                              setCurrency(c)
+                              setShowLanguageDropdown(false)
+                            }}
+                            className="w-full px-4 py-2 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="flex items-center space-x-2.5">
+                              <span className={`fi fi-${c.countryCode} rounded`}></span>
+                              <span className="text-sm text-slate-700">
+                                {c.code} · {c.label}
+                              </span>
+                            </span>
+                            {currency.code === c.code && (
+                              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={ORANGE} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div>
+                        {LANGUAGES.map((lang) => (
+                          <button
+                            key={lang.code}
+                            type="button"
+                            role="option"
+                            aria-selected={language.code === lang.code}
+                            onClick={() => {
+                              setLanguage(lang)
+                            }}
+                            className="w-full px-4 py-2 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="flex items-center space-x-2.5">
+                              <span className={`fi fi-${lang.countryCode} rounded`}></span>
+                              <span className="text-sm text-slate-700">{lang.label}</span>
+                            </span>
+                            {language.code === lang.code && (
+                              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={ORANGE} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Sign In / Register */}
+            <Link
+              to="/signin"
+              className="group relative flex items-center px-6 py-2.5 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              style={{ backgroundColor: ORANGE, '--tw-ring-color': ORANGE }}
+            >
+              <span className="transition-transform duration-300 group-hover:-translate-x-1">
+                Sign In / Register
+              </span>
+              <svg
+                className="w-0 opacity-0 ml-0 transition-all duration-300 group-hover:w-4 group-hover:opacity-100 group-hover:ml-2"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M21.7 3.3a1 1 0 00-1-.25L2.3 9.03a1 1 0 00-.06 1.87l7.11 2.85 2.85 7.11a1 1 0 001.87-.06l6-18.4a1 1 0 00-.36-1.1z" />
+              </svg>
+            </Link>
+
+            {/* Menu Button */}
+            <div className="relative" ref={menuDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setShowMenuDropdown((v) => !v)}
+                className="flex items-center justify-center w-10 h-10 rounded-lg border transition-colors hover:bg-slate-50"
+                style={{ borderColor: showMenuDropdown ? ORANGE : '#E2E8F0' }}
+              >
+                {showMenuDropdown ? <X size={20} style={{ color: NAVY }} /> : <Menu size={20} style={{ color: NAVY }} />}
+              </button>
+
+              {showMenuDropdown && (
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                  {menuItems.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={`/${item.id}`}
+                      onClick={() => setShowMenuDropdown(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            className="lg:hidden p-2 rounded-lg hover:bg-slate-50"
+            aria-label="Toggle menu"
+            aria-expanded={showMobileMenu}
+            onClick={() => setShowMobileMenu((v) => !v)}
+          >
+            <svg className="w-6 h-6" style={{ color: NAVY }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {showMobileMenu ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu panel */}
+      <div
+        className={`lg:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out border-t border-slate-100 ${
+          showMobileMenu ? 'max-h-[520px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="px-4 py-4 space-y-1 bg-white">
+          {/* Services */}
+          <div className="mb-4">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400 px-2">Services</span>
+            <div className="grid grid-cols-4 gap-y-3 mt-2">
+              {SERVICES.map((service) => (
+                <Link
+                  key={service.id}
+                  to={`/${service.id}`}
+                  className="flex flex-col items-center gap-1.5 group"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  <ServiceIcon service={service} size={40} iconSize={18} />
+                  <span className="text-[11px] font-semibold text-center leading-tight" style={{ color: NAVY }}>
+                    {service.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Language & Currency */}
+          <div className="flex items-center justify-between px-2 py-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Language</span>
+            <div className="flex space-x-1">
+              {LANGUAGES.slice(0, 4).map((lang) => (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => setLanguage(lang)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors ${
+                    language.code === lang.code ? 'text-white' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                  style={language.code === lang.code ? { backgroundColor: NAVY } : {}}
+                >
+                  <span className={`fi fi-${lang.countryCode} rounded mr-1`}></span>
+                  {lang.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between px-2 py-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Currency</span>
+            <div className="flex space-x-1">
+              {CURRENCIES.map((c) => (
+                <button
+                  key={c.code}
+                  type="button"
+                  onClick={() => setCurrency(c)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors ${
+                    currency.code === c.code ? 'text-white' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                  style={currency.code === c.code ? { backgroundColor: NAVY } : {}}
+                >
+                  <span className={`fi fi-${c.countryCode} rounded mr-1`}></span>
+                  {c.code}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Menu Items */}
+          <div className="space-y-1 mb-4">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400 px-2">Menu</span>
+            {menuItems.map((item) => (
+              <Link
+                key={item.id}
+                to={`/${item.id}`}
+                className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-slate-50"
+                style={{ color: NAVY }}
+                onClick={() => setShowMobileMenu(false)}
+              >
+                {item.icon}
+                <span className="text-sm font-medium">{item.name}</span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Sign In / Register */}
+          <Link
+            to="/signin"
+            className="block text-center px-6 py-3 rounded-lg font-semibold text-sm text-white"
+            style={{ backgroundColor: ORANGE }}
+            onClick={() => setShowMobileMenu(false)}
+          >
+            Sign In / Register
+          </Link>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
+export default Navbar

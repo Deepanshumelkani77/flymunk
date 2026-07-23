@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   Plane,
   Bed,
@@ -104,6 +104,7 @@ const ServiceIcon = ({ service, size = 44, iconSize = 20 }) => {
 }
 
 const Navbar = () => {
+  const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
@@ -164,22 +165,34 @@ const Navbar = () => {
           </Link>
 
           {/* Services - Center */}
-          <div className="hidden lg:flex items-center gap-4 flex-1 justify-center">
-            {SERVICES.map((service) => (
-              <Link
-                key={service.id}
-                to={`/${service.id}`}
-                className="flex flex-col items-center gap-1 px-2.5 py-2 rounded-xl font-medium text-sm group"
-              >
-                <ServiceIcon service={service} />
-                <span
-                  className="text-[12.5px] font-semibold tracking-tight transition-colors duration-200"
-                  style={{ color: NAVY }}
+          <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+            {SERVICES.map((service) => {
+              const isActive = location.pathname === `/${service.id}`
+              return (
+                <Link
+                  key={service.id}
+                  to={`/${service.id}`}
+                  className="relative flex items-center px-4 py-2.5 mx-0.5 rounded-xl group transition-all duration-300 ease-out hover:-translate-y-0.5"
+                  style={{
+                    backgroundColor: isActive ? hexToRgba(ORANGE, 0.08) : 'transparent',
+                  }}
                 >
-                  {service.name}
-                </span>
-              </Link>
-            ))}
+                  <span
+                    className="text-[18px] font-semibold tracking-tight transition-colors duration-300 whitespace-nowrap"
+                    style={{ color: isActive ? ORANGE : NAVY }}
+                  >
+                    {service.name}
+                  </span>
+                  {/* animated underline: grows from center on hover, stays full-width when active */}
+                  <span
+                    className={`absolute left-4 right-4 -bottom-0.5 h-[2px] rounded-full origin-center transition-transform duration-300 ease-out ${
+                      isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                    }`}
+                    style={{ backgroundColor: ORANGE }}
+                  />
+                </Link>
+              )
+            })}
           </div>
 
           {/* Right Section */}
