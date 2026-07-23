@@ -43,7 +43,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       </Routes>
       </main>
-      
+      <PopularSearches/>
       <Footer />
   
     </div>

@@ -902,7 +902,7 @@ const Header = () => {
                     Villas
                   </button>
                   <div className="w-4"></div>
-                  <div className="ml-5 flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-all cursor-pointer">
+                  <div className="ml-10 flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-all cursor-pointer">
                     <input 
                       type="checkbox"
                       id="upto4rooms"
