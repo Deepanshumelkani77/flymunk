@@ -17,6 +17,10 @@ import {
   PenTool,
   Building2,
   X,
+  DollarSign,
+  Calendar,
+  MoreHorizontal,
+  MapPin,
 } from 'lucide-react'
 import assets from '../assets/assets.js'
 
@@ -52,12 +56,13 @@ const SERVICE_HOVER_COLOR = ORANGE
 const SERVICES = [
   { id: 'flights', name: 'Flights', icon: Plane },
   { id: 'hotels', name: 'Hotels', icon: Bed },
-  { id: 'cars', name: 'Cars', icon: Car },
-  { id: 'cruises', name: 'Cruises', icon: Ship },
-  { id: 'attractions', name: 'Attractions', icon: Landmark },
+  { id: 'flight - hotel', name: 'Flight + Hotel', icon: Calendar },
+  { id: 'transport', name: 'Transport', icon: Car },
+ 
   { id: 'visa', name: 'Visa', icon: Stamp },
   { id: 'insurance', name: 'Insurance', icon: Shield },
-  { id: 'group-trip', name: 'Group Trip', icon: Users },
+  
+  { id: 'forex', name: 'Forex', icon: DollarSign },
 ]
 
 // Small helper: hex -> rgba, so each badge's tint/hover states derive
@@ -109,11 +114,13 @@ const Navbar = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showMenuDropdown, setShowMenuDropdown] = useState(false)
+  const [showMoreServicesDropdown, setShowMoreServicesDropdown] = useState(false)
   const [currency, setCurrency] = useState(CURRENCIES[0])
   const [language, setLanguage] = useState(LANGUAGES[0])
   const [dropdownView, setDropdownView] = useState('currency')
   const dropdownRef = useRef(null)
   const menuDropdownRef = useRef(null)
+  const moreServicesRef = useRef(null)
 
   const menuItems = [
     { id: 'support', name: 'Customer Support', icon: <Phone size={18} /> },
@@ -141,6 +148,9 @@ const Navbar = () => {
       }
       if (menuDropdownRef.current && !menuDropdownRef.current.contains(e.target)) {
         setShowMenuDropdown(false)
+      }
+      if (moreServicesRef.current && !moreServicesRef.current.contains(e.target)) {
+        setShowMoreServicesDropdown(false)
       }
     }
     document.addEventListener('mousedown', onClickOutside)
@@ -193,6 +203,49 @@ const Navbar = () => {
                 </Link>
               )
             })}
+            
+            {/* More Services Dropdown */}
+            <div className="relative" ref={moreServicesRef}>
+              <button
+                type="button"
+                onClick={() => setShowMoreServicesDropdown((v) => !v)}
+                className="relative flex items-center px-3 py-2.5 mx-0.5 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5"
+                style={{
+                  backgroundColor: showMoreServicesDropdown ? hexToRgba(ORANGE, 0.08) : 'transparent',
+                }}
+              >
+                <MoreHorizontal size={20} style={{ color: NAVY }} />
+              </button>
+
+              {showMoreServicesDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                  <Link
+                    to="/attractions"
+                    onClick={() => setShowMoreServicesDropdown(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <Landmark size={18} style={{ color: ORANGE }} />
+                    <span>Attractions</span>
+                  </Link>
+                  <Link
+                    to="/group-trip"
+                    onClick={() => setShowMoreServicesDropdown(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <Users size={18} style={{ color: ORANGE }} />
+                    <span>Group Trip</span>
+                  </Link>
+                  <Link
+                    to="/private-trip"
+                    onClick={() => setShowMoreServicesDropdown(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <MapPin size={18} style={{ color: ORANGE }} />
+                    <span>Private Trip</span>
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right Section */}
