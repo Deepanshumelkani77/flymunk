@@ -21,6 +21,7 @@ import {
   Calendar,
   MoreHorizontal,
   MapPin,
+  Train,
 } from 'lucide-react'
 import assets from '../assets/assets.js'
 
@@ -115,12 +116,14 @@ const Navbar = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showMenuDropdown, setShowMenuDropdown] = useState(false)
   const [showMoreServicesDropdown, setShowMoreServicesDropdown] = useState(false)
+  const [showTransportDropdown, setShowTransportDropdown] = useState(false)
   const [currency, setCurrency] = useState(CURRENCIES[0])
   const [language, setLanguage] = useState(LANGUAGES[0])
   const [dropdownView, setDropdownView] = useState('currency')
   const dropdownRef = useRef(null)
   const menuDropdownRef = useRef(null)
   const moreServicesRef = useRef(null)
+  const transportRef = useRef(null)
 
   const menuItems = [
     { id: 'support', name: 'Customer Support', icon: <Phone size={18} /> },
@@ -152,6 +155,9 @@ const Navbar = () => {
       if (moreServicesRef.current && !moreServicesRef.current.contains(e.target)) {
         setShowMoreServicesDropdown(false)
       }
+      if (transportRef.current && !transportRef.current.contains(e.target)) {
+        setShowTransportDropdown(false)
+      }
     }
     document.addEventListener('mousedown', onClickOutside)
     return () => document.removeEventListener('mousedown', onClickOutside)
@@ -178,29 +184,75 @@ const Navbar = () => {
           <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
             {SERVICES.map((service) => {
               const isActive = location.pathname === `/${service.id}`
+              const isTransport = service.id === 'transport'
+              
               return (
-                <Link
+                <div
                   key={service.id}
-                  to={`/${service.id}`}
-                  className="relative flex items-center px-4 py-2.5 mx-0.5 rounded-xl group transition-all duration-300 ease-out hover:-translate-y-0.5"
-                  style={{
-                    backgroundColor: isActive ? hexToRgba(ORANGE, 0.08) : 'transparent',
-                  }}
+                  className="relative"
+                  ref={isTransport ? transportRef : null}
+                  onMouseEnter={isTransport ? () => setShowTransportDropdown(true) : undefined}
+                  onMouseLeave={isTransport ? () => setShowTransportDropdown(false) : undefined}
                 >
-                  <span
-                    className="text-[18px] font-semibold tracking-tight transition-colors duration-300 whitespace-nowrap"
-                    style={{ color: isActive ? ORANGE : NAVY }}
+                  <Link
+                    to={`/${service.id}`}
+                    className="relative flex items-center px-4 py-2.5 mx-0.5 rounded-xl group transition-all duration-300 ease-out hover:-translate-y-0.5"
+                    style={{
+                      backgroundColor: isActive ? hexToRgba(ORANGE, 0.08) : 'transparent',
+                    }}
                   >
-                    {service.name}
-                  </span>
-                  {/* animated underline: grows from center on hover, stays full-width when active */}
-                  <span
-                    className={`absolute left-4 right-4 -bottom-0.5 h-[2px] rounded-full origin-center transition-transform duration-300 ease-out ${
-                      isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                    }`}
-                    style={{ backgroundColor: ORANGE }}
-                  />
-                </Link>
+                    <span
+                      className="text-[18px] font-semibold tracking-tight transition-colors duration-300 whitespace-nowrap"
+                      style={{ color: isActive ? ORANGE : NAVY }}
+                    >
+                      {service.name}
+                    </span>
+                    {/* animated underline: grows from center on hover, stays full-width when active */}
+                    <span
+                      className={`absolute left-4 right-4 -bottom-0.5 h-[2px] rounded-full origin-center transition-transform duration-300 ease-out ${
+                        isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                      }`}
+                      style={{ backgroundColor: ORANGE }}
+                    />
+                  </Link>
+
+                  {isTransport && showTransportDropdown && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                      <Link
+                        to="/cars"
+                        onClick={() => setShowTransportDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Car size={18} style={{ color: ORANGE }} />
+                        <span>Cars</span>
+                      </Link>
+                      <Link
+                        to="/train"
+                        onClick={() => setShowTransportDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Train size={18} style={{ color: ORANGE }} />
+                        <span>Train</span>
+                      </Link>
+                      <Link
+                        to="/cabs"
+                        onClick={() => setShowTransportDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Car size={18} style={{ color: ORANGE }} />
+                        <span>Cabs</span>
+                      </Link>
+                      <Link
+                        to="/cruises"
+                        onClick={() => setShowTransportDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Ship size={18} style={{ color: ORANGE }} />
+                        <span>Cruises</span>
+                      </Link>
+                    </div>
+                  )}
+                </div>
               )
             })}
             

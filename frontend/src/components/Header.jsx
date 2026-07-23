@@ -72,6 +72,8 @@ const Header = () => {
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
   const [showHotelSearch, setShowHotelSearch] = useState(false);
   const [hoveredGroupDeals, setHoveredGroupDeals] = useState(false);
+  const [hotelType, setHotelType] = useState('hotels');
+  const [hotelGroupTrip, setHotelGroupTrip] = useState(false);
 
   // Car search state
   const [carSearchType, setCarSearchType] = useState('carRentals');
@@ -867,81 +869,75 @@ const Header = () => {
 
             {activeTab === 'hotels' && (
               <div className="space-y-3">
-                {/* Hotel Room Type Options */}
+                {/* Hotel Type Options and Checkboxes in one row */}
                 <div className="flex gap-2 mb-3 flex-wrap items-center">
-                  <button 
-                    onClick={() => {
-                      setHotelRoomType('upto4rooms');
-                      setHotelRooms(1);
-                      setHotelAdults(2);
-                      setHotelChildren(0);
-                    }}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
-                      hotelRoomType === 'upto4rooms' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  <button
+                    onClick={() => setHotelType('hotels')}
+                    className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                      hotelType === 'hotels' 
+                        ? 'bg-orange-500 text-white' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
-                    style={hotelRoomType === 'upto4rooms' ? { backgroundColor: NAVY } : {}}
                   >
-                    <Bed size={14} /> Up to 4 rooms
+                    Hotels
                   </button>
-                  <button 
-                    onClick={() => {
-                      setHotelRoomType('groupdeals');
-                      setHotelRooms(5);
-                      setHotelAdults(10);
-                      setHotelChildren(0);
-                    }}
-                    onMouseEnter={() => setHoveredGroupDeals(true)}
-                    onMouseLeave={() => setHoveredGroupDeals(false)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all hover:shadow-lg relative ${
-                      hotelRoomType === 'groupdeals' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  <button
+                    onClick={() => setHotelType('homes')}
+                    className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                      hotelType === 'homes' 
+                        ? 'bg-orange-500 text-white' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
-                    style={hotelRoomType === 'groupdeals' ? { backgroundColor: NAVY } : {}}
                   >
-                    <Briefcase size={14} /> Group Trip
-                    {hoveredGroupDeals && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-[360px] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
-                        <div className="bg-gradient-to-r from-orange-50 to-white px-4 py-3 border-b border-gray-100">
-                          <div className="flex items-center gap-2">
-                            <Briefcase size={18} className="text-orange-500" />
-                            <h4 className="font-bold text-gray-800 text-base">Group Deals</h4>
-                          </div>
-                        </div>
-                        <div className="p-4 space-y-3">
-                          <p className="text-sm text-gray-600 leading-relaxed">Exclusive discounts and special offers for group bookings at participating hotels</p>
-                          <div className="bg-orange-50 rounded-lg p-3 border border-orange-100">
-                            <div className="font-semibold text-gray-800 text-sm mb-2 flex items-center gap-2">
-                              <Users size={14} className="text-orange-500" />
-                              Requirements
-                            </div>
-                            <ul className="space-y-2">
-                              <li className="flex items-start gap-2 text-xs text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
-                                <span>Minimum 10 rooms required per booking</span>
-                              </li>
-                              <li className="flex items-start gap-2 text-xs text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
-                                <span>Valid company/group ID proof mandatory</span>
-                              </li>
-                              <li className="flex items-start gap-2 text-xs text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
-                                <span>Advance booking (7+ days) recommended</span>
-                              </li>
-                              <li className="flex items-start gap-2 text-xs text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div>
-                                <span>Flexible cancellation policies available</span>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-orange-600 font-medium">
-                            <TrendingUp size={12} />
-                            <span>Save up to 25% on group bookings</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    Homes
                   </button>
+                  <button
+                    onClick={() => setHotelType('villas')}
+                    className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                      hotelType === 'villas' 
+                        ? 'bg-orange-500 text-white' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Villas
+                  </button>
+                  <div className="w-4"></div>
+                  <div className="ml-5 flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-all cursor-pointer">
+                    <input 
+                      type="checkbox"
+                      id="upto4rooms"
+                      checked={hotelRoomType === 'upto4rooms'}
+                      onChange={(e) => setHotelRoomType(e.target.checked ? 'upto4rooms' : '')}
+                      className="w-4 h-4 accent-orange-500"
+                    />
+                    <label htmlFor="upto4rooms" className="text-sm font-medium text-gray-700 cursor-pointer">
+                      Up to 4 rooms
+                    </label>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-all cursor-pointer">
+                    <input 
+                      type="checkbox"
+                      id="hotelGroupTrip"
+                      checked={hotelGroupTrip}
+                      onChange={(e) => {
+                        setHotelGroupTrip(e.target.checked);
+                        if (e.target.checked) {
+                          setHotelRooms(5);
+                          setHotelAdults(10);
+                        } else {
+                          setHotelRooms(1);
+                          setHotelAdults(2);
+                        }
+                      }}
+                      className="w-4 h-4 accent-orange-500"
+                    />
+                    <label htmlFor="hotelGroupTrip" className="text-sm font-medium text-gray-700 cursor-pointer">
+                      Group Trip
+                    </label>
+                  </div>
                 </div>
 
+            
                 <div className="flex gap-3">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-3 flex-1">
                     {/* Destination */}
