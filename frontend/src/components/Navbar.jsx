@@ -1,5 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  Plane,
+  Bed,
+  Car,
+  Ship,
+  Shield,
+  Users,
+  Stamp,
+  Landmark,
+  Menu,
+  Phone,
+  FileText,
+  Mail,
+  Info,
+  PenTool,
+  Building2,
+  X,
+} from 'lucide-react'
 import assets from '../assets/assets.js'
 
 const CURRENCIES = [
@@ -23,32 +41,87 @@ const LANGUAGES = [
   { code: 'ar', label: 'Arabic', countryCode: 'sa' },
 ]
 
-
-
-
 const NAVY = '#02173C'
 const ORANGE = '#FF6102'
 
-const MapIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={1.6}
-      stroke="currentColor"
-      d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
-    />
-  </svg>
-)
+// All service badges share one brand color (navy tint, orange on hover)
+// so the strip reads as one consistent icon set instead of a rainbow.
+const SERVICE_COLOR = NAVY
+const SERVICE_HOVER_COLOR = ORANGE
+
+const SERVICES = [
+  { id: 'flights', name: 'Flights', icon: Plane },
+  { id: 'hotels', name: 'Hotels', icon: Bed },
+  { id: 'cars', name: 'Cars', icon: Car },
+  { id: 'cruises', name: 'Cruises', icon: Ship },
+  { id: 'attractions', name: 'Attractions', icon: Landmark },
+  { id: 'visa', name: 'Visa', icon: Stamp },
+  { id: 'insurance', name: 'Insurance', icon: Shield },
+  { id: 'group-trip', name: 'Group Trip', icon: Users },
+]
+
+// Small helper: hex -> rgba, so each badge's tint/hover states derive
+// from a single source color instead of hand-picked pastel classes.
+const hexToRgba = (hex, alpha) => {
+  const h = hex.replace('#', '')
+  const bigint = parseInt(h, 16)
+  const r = (bigint >> 16) & 255
+  const g = (bigint >> 8) & 255
+  const b = bigint & 255
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+const ServiceIcon = ({ service, size = 44, iconSize = 20 }) => {
+  const Icon = service.icon
+  return (
+    <div
+      className="flex items-center justify-center rounded-2xl transition-all duration-300 ease-out group-hover:-translate-y-0.5"
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: hexToRgba(SERVICE_COLOR, 0.07),
+        border: `1px solid ${hexToRgba(SERVICE_COLOR, 0.14)}`,
+        boxShadow: `0 0 0 0 ${hexToRgba(SERVICE_HOVER_COLOR, 0)}`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = SERVICE_HOVER_COLOR
+        e.currentTarget.style.borderColor = SERVICE_HOVER_COLOR
+        e.currentTarget.style.boxShadow = `0 8px 16px -4px ${hexToRgba(SERVICE_HOVER_COLOR, 0.45)}`
+        const glyph = e.currentTarget.querySelector('.service-icon-glyph')
+        if (glyph) glyph.style.color = '#FFFFFF'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = hexToRgba(SERVICE_COLOR, 0.07)
+        e.currentTarget.style.borderColor = hexToRgba(SERVICE_COLOR, 0.14)
+        e.currentTarget.style.boxShadow = `0 0 0 0 ${hexToRgba(SERVICE_HOVER_COLOR, 0)}`
+        const glyph = e.currentTarget.querySelector('.service-icon-glyph')
+        if (glyph) glyph.style.color = SERVICE_COLOR
+      }}
+    >
+      <Icon size={iconSize} strokeWidth={1.9} style={{ color: SERVICE_COLOR }} className="service-icon-glyph" />
+    </div>
+  )
+}
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [showMenuDropdown, setShowMenuDropdown] = useState(false)
   const [currency, setCurrency] = useState(CURRENCIES[0])
   const [language, setLanguage] = useState(LANGUAGES[0])
   const [dropdownView, setDropdownView] = useState('currency')
   const dropdownRef = useRef(null)
+  const menuDropdownRef = useRef(null)
+
+  const menuItems = [
+    { id: 'support', name: 'Customer Support', icon: <Phone size={18} /> },
+    { id: 'bookings', name: 'Find Bookings', icon: <FileText size={18} /> },
+    { id: 'contact', name: 'Contact', icon: <Mail size={18} /> },
+    { id: 'about', name: 'About', icon: <Info size={18} /> },
+    { id: 'blog', name: 'Blog', icon: <PenTool size={18} /> },
+    { id: 'career', name: 'Career', icon: <Building2 size={18} /> },
+  ]
 
   // Add a shadow once the page has scrolled, so the bar reads as "lifted"
   // above the content instead of always carrying a heavy shadow.
@@ -65,6 +138,9 @@ const Navbar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShowLanguageDropdown(false)
       }
+      if (menuDropdownRef.current && !menuDropdownRef.current.contains(e.target)) {
+        setShowMenuDropdown(false)
+      }
     }
     document.addEventListener('mousedown', onClickOutside)
     return () => document.removeEventListener('mousedown', onClickOutside)
@@ -78,8 +154,8 @@ const Navbar = () => {
     >
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center group">
+          {/* Logo - Left */}
+          <Link to="/" className="flex items-center group flex-shrink-0">
             <img
               src={assets.image3}
               alt="FlyMunk Logo"
@@ -87,9 +163,28 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Desktop right side */}
-          <div className="hidden md:flex items-center space-x-2">
-            {/* Currency selector */}
+          {/* Services - Center */}
+          <div className="hidden lg:flex items-center gap-4 flex-1 justify-center">
+            {SERVICES.map((service) => (
+              <Link
+                key={service.id}
+                to={`/${service.id}`}
+                className="flex flex-col items-center gap-1 px-2.5 py-2 rounded-xl font-medium text-sm group"
+              >
+                <ServiceIcon service={service} />
+                <span
+                  className="text-[12.5px] font-semibold tracking-tight transition-colors duration-200"
+                  style={{ color: NAVY }}
+                >
+                  {service.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right Section */}
+          <div className="flex items-center space-x-3">
+            {/* Language & Currency Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button
                 type="button"
@@ -194,9 +289,7 @@ const Navbar = () => {
                           >
                             <span className="flex items-center space-x-2.5">
                               <span className={`fi fi-${lang.countryCode} rounded`}></span>
-                              <span className="text-sm text-slate-700">
-                                {lang.label}
-                              </span>
+                              <span className="text-sm text-slate-700">{lang.label}</span>
                             </span>
                             {language.code === lang.code && (
                               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={ORANGE} viewBox="0 0 24 24">
@@ -212,27 +305,7 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Customer support */}
-            <Link
-              to="/support"
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors group"
-              style={{ color: NAVY }}
-            >
-             
-              <span className="text-sm font-medium">Customer support</span>
-            </Link>
-
-            {/* Find Bookings */}
-            <Link
-              to="/find-booking"
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors group"
-              style={{ color: NAVY }}
-            >
-            
-              <span className="text-sm font-medium">Find Bookings</span>
-            </Link>
-
-            {/* Sign In / Register — icon "takes off" on hover */}
+            {/* Sign In / Register */}
             <Link
               to="/signin"
               className="group relative flex items-center px-6 py-2.5 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
@@ -249,12 +322,40 @@ const Navbar = () => {
                 <path d="M21.7 3.3a1 1 0 00-1-.25L2.3 9.03a1 1 0 00-.06 1.87l7.11 2.85 2.85 7.11a1 1 0 001.87-.06l6-18.4a1 1 0 00-.36-1.1z" />
               </svg>
             </Link>
+
+            {/* Menu Button */}
+            <div className="relative" ref={menuDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setShowMenuDropdown((v) => !v)}
+                className="flex items-center justify-center w-10 h-10 rounded-lg border transition-colors hover:bg-slate-50"
+                style={{ borderColor: showMenuDropdown ? ORANGE : '#E2E8F0' }}
+              >
+                {showMenuDropdown ? <X size={20} style={{ color: NAVY }} /> : <Menu size={20} style={{ color: NAVY }} />}
+              </button>
+
+              {showMenuDropdown && (
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                  {menuItems.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={`/${item.id}`}
+                      onClick={() => setShowMenuDropdown(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile menu button */}
           <button
             type="button"
-            className="md:hidden p-2 rounded-lg hover:bg-slate-50"
+            className="lg:hidden p-2 rounded-lg hover:bg-slate-50"
             aria-label="Toggle menu"
             aria-expanded={showMobileMenu}
             onClick={() => setShowMobileMenu((v) => !v)}
@@ -272,11 +373,32 @@ const Navbar = () => {
 
       {/* Mobile menu panel */}
       <div
-        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out border-t border-slate-100 ${
-          showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        className={`lg:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out border-t border-slate-100 ${
+          showMobileMenu ? 'max-h-[520px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="px-4 py-4 space-y-1 bg-white">
+          {/* Services */}
+          <div className="mb-4">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400 px-2">Services</span>
+            <div className="grid grid-cols-4 gap-y-3 mt-2">
+              {SERVICES.map((service) => (
+                <Link
+                  key={service.id}
+                  to={`/${service.id}`}
+                  className="flex flex-col items-center gap-1.5 group"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  <ServiceIcon service={service} size={40} iconSize={18} />
+                  <span className="text-[11px] font-semibold text-center leading-tight" style={{ color: NAVY }}>
+                    {service.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Language & Currency */}
           <div className="flex items-center justify-between px-2 py-2">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Language</span>
             <div className="flex space-x-1">
@@ -317,41 +439,24 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Link
-            to="/support"
-            className="flex items-center space-x-2 px-2 py-3 rounded-lg hover:bg-slate-50"
-            style={{ color: NAVY }}
-            onClick={() => setShowMobileMenu(false)}
-          >
-            <svg className="w-[18px] h-[18px] text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 18v-6a9 9 0 0118 0v6" />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.8}
-                d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3v5zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3v5z"
-              />
-            </svg>
-            <span className="text-sm font-medium">Customer support</span>
-          </Link>
+          {/* Menu Items */}
+          <div className="space-y-1 mb-4">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400 px-2">Menu</span>
+            {menuItems.map((item) => (
+              <Link
+                key={item.id}
+                to={`/${item.id}`}
+                className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-slate-50"
+                style={{ color: NAVY }}
+                onClick={() => setShowMobileMenu(false)}
+              >
+                {item.icon}
+                <span className="text-sm font-medium">{item.name}</span>
+              </Link>
+            ))}
+          </div>
 
-          <Link
-            to="/find-booking"
-            className="flex items-center space-x-2 px-2 py-3 rounded-lg hover:bg-slate-50"
-            style={{ color: NAVY }}
-            onClick={() => setShowMobileMenu(false)}
-          >
-            <svg className="w-[18px] h-[18px] text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.8}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            <span className="text-sm font-medium">Find Bookings</span>
-          </Link>
-
+          {/* Sign In / Register */}
           <Link
             to="/signin"
             className="block text-center px-6 py-3 rounded-lg font-semibold text-sm text-white"
