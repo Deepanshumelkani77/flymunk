@@ -1360,6 +1360,15 @@ const Header = () => {
                     <Car size={14} /> Car Rentals
                   </button>
                   <button
+                    onClick={() => setCarSearchType('cabs')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                      carSearchType === 'cabs' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={carSearchType === 'cabs' ? { backgroundColor: NAVY } : {}}
+                  >
+                    <Car size={14} /> Cabs
+                  </button>
+                  <button
                     onClick={() => setCarSearchType('airportTransfers')}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
                       carSearchType === 'airportTransfers' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -1629,6 +1638,154 @@ const Header = () => {
                                   );
                                 })}
                               </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Search Button */}
+                      <button className="m-auto text-white px-8 py-3 rounded-lg text-base hover:shadow-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap" style={{ backgroundColor: ORANGE }}>
+                        <Search size={18} /> Search
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Cabs Search */}
+                {carSearchType === 'cabs' && (
+                  <div className="space-y-3">
+                    <div className="flex gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 flex-1">
+                        {/* Pick-up Location */}
+                        <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400">
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Pick-up Location</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <MapPin size={16} style={{ color: ORANGE }} />
+                            <input
+                              type="text"
+                              placeholder="Enter pick-up location"
+                              className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Drop-off Location */}
+                        <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400">
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Drop-off Location</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <MapPin size={16} style={{ color: ORANGE }} />
+                            <input
+                              type="text"
+                              placeholder="Enter drop-off location"
+                              className="w-full outline-none font-semibold text-gray-800 bg-transparent placeholder-gray-400 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Date */}
+                        <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400 cursor-pointer relative" onClick={() => setShowCarPickupCalendar(!showCarPickupCalendar)}>
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Date</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Calendar size={16} style={{ color: ORANGE }} />
+                            <span className="font-semibold text-gray-800 text-sm">
+                              {carPickupDate ? new Date(carPickupDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Add date'}
+                            </span>
+                            <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                          </div>
+
+                          {/* Calendar Popup */}
+                          {showCarPickupCalendar && (
+                            <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                              {/* Calendar Header */}
+                              <div className="flex items-center justify-between mb-4">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCarPickupMonth(new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth() - 1, 1));
+                                  }}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronLeft size={20} className="text-gray-600" />
+                                </button>
+                                <span className="font-bold text-gray-800">
+                                  {carPickupMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                                </span>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCarPickupMonth(new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth() + 1, 1));
+                                  }}
+                                  className="p-1 hover:bg-gray-100 rounded-lg transition-all"
+                                >
+                                  <ChevronRight size={20} className="text-gray-600" />
+                                </button>
+                              </div>
+
+                              {/* Calendar Grid */}
+                              <div className="grid grid-cols-7 gap-1 text-center">
+                                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                                  <div key={day} className="text-xs font-semibold text-gray-500 py-2">
+                                    {day}
+                                  </div>
+                                ))}
+                                {Array.from({ length: new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth() + 1, 0).getDate() }, (_, i) => {
+                                  const date = new Date(carPickupMonth.getFullYear(), carPickupMonth.getMonth(), i + 1);
+                                  const isPast = date < new Date().setHours(0, 0, 0, 0);
+                                  const isSelected = carPickupDate && date.toDateString() === carPickupDate.toDateString();
+                                  return (
+                                    <div
+                                      key={i}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (!isPast) {
+                                          setCarPickupDate(date);
+                                          setShowCarPickupCalendar(false);
+                                        }
+                                      }}
+                                      className={`py-2 text-sm rounded-lg cursor-pointer transition-all ${
+                                        isPast
+                                          ? 'text-gray-300 cursor-not-allowed'
+                                          : isSelected
+                                          ? 'bg-orange-500 text-white font-semibold'
+                                          : 'hover:bg-orange-100 text-gray-700'
+                                      }`}
+                                    >
+                                      {i + 1}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Time */}
+                        <div className="bg-white rounded-lg p-2 hover:bg-orange-50 transition-all border-2 border-gray-200 hover:border-orange-400 cursor-pointer relative" onClick={() => setShowCarPickupTime(!showCarPickupTime)}>
+                          <label className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">Time</label>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Clock size={16} style={{ color: ORANGE }} />
+                            <span className="font-semibold text-gray-800 text-sm">{carPickupTime}</span>
+                            <ChevronDown size={14} className="text-gray-400 ml-auto" />
+                          </div>
+
+                          {/* Time Dropdown */}
+                          {showCarPickupTime && (
+                            <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 w-32 max-h-64 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                              {timeSlots.map((time) => (
+                                <div
+                                  key={time}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCarPickupTime(time);
+                                    setShowCarPickupTime(false);
+                                  }}
+                                  className={`px-4 py-2 text-sm cursor-pointer hover:bg-orange-50 transition-all ${
+                                    carPickupTime === time ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'
+                                  }`}
+                                >
+                                  {time}
+                                </div>
+                              ))}
                             </div>
                           )}
                         </div>

@@ -58,11 +58,9 @@ const SERVICES = [
   { id: 'flights', name: 'Flights', icon: Plane },
   { id: 'hotels', name: 'Hotels', icon: Bed },
   { id: 'flight - hotel', name: 'Flight + Hotel', icon: Calendar },
+  { id: 'attractions', name: 'Attractions', icon: Landmark },
   { id: 'transport', name: 'Transport', icon: Car },
- 
   { id: 'visa', name: 'Visa', icon: Stamp },
-  { id: 'insurance', name: 'Insurance', icon: Shield },
-  
   { id: 'forex', name: 'Forex', icon: DollarSign },
 ]
 
@@ -224,15 +222,15 @@ const Navbar = () => {
                         className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
                       >
                         <Car size={18} style={{ color: ORANGE }} />
-                        <span>Cars</span>
+                        <span>Car Rental</span>
                       </Link>
                       <Link
-                        to="/train"
+                        to="/cabs"
                         onClick={() => setShowTransportDropdown(false)}
                         className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
                       >
-                        <Train size={18} style={{ color: ORANGE }} />
-                        <span>Train</span>
+                        <Car size={18} style={{ color: ORANGE }} />
+                        <span>Airport Transfer</span>
                       </Link>
                       <Link
                         to="/cabs"
@@ -249,6 +247,14 @@ const Navbar = () => {
                       >
                         <Ship size={18} style={{ color: ORANGE }} />
                         <span>Cruises</span>
+                      </Link>
+                      <Link
+                        to="/train"
+                        onClick={() => setShowTransportDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Train size={18} style={{ color: ORANGE }} />
+                        <span>Train</span>
                       </Link>
                     </div>
                   )}
@@ -272,12 +278,12 @@ const Navbar = () => {
               {showMoreServicesDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
                   <Link
-                    to="/attractions"
+                    to="/insurance"
                     onClick={() => setShowMoreServicesDropdown(false)}
                     className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
                   >
-                    <Landmark size={18} style={{ color: ORANGE }} />
-                    <span>Attractions</span>
+                    <Shield size={18} style={{ color: ORANGE }} />
+                    <span>Insurance</span>
                   </Link>
                   <Link
                     to="/group-trip"
