@@ -1359,15 +1359,7 @@ const Header = () => {
                   >
                     <Car size={14} /> Car Rentals
                   </button>
-                  <button
-                    onClick={() => setCarSearchType('cabs')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
-                      carSearchType === 'cabs' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                    style={carSearchType === 'cabs' ? { backgroundColor: NAVY } : {}}
-                  >
-                    <Car size={14} /> Cabs
-                  </button>
+
                   <button
                     onClick={() => setCarSearchType('airportTransfers')}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
@@ -1376,6 +1368,15 @@ const Header = () => {
                     style={carSearchType === 'airportTransfers' ? { backgroundColor: NAVY } : {}}
                   >
                     <Plane size={14} /> Airport Transfers
+                  </button>
+                     <button
+                    onClick={() => setCarSearchType('cabs')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg ${
+                      carSearchType === 'cabs' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={carSearchType === 'cabs' ? { backgroundColor: NAVY } : {}}
+                  >
+                    <Car size={14} /> Cabs
                   </button>
                 </div>
 
