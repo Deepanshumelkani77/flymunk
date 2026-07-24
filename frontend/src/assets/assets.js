@@ -2,12 +2,18 @@ import image3 from './image3.png';
 import logo1 from './logo1.png';
 import seen from './seen.png';
 import seenn from './seenn.png';
-import p1 from './p1.png';
-import p2 from './p2.png';
-import p3 from './p3.png';
-import p4 from './p4.png';
-import p5 from './p5.png';
-import p6 from './p6.png';
+import po1 from './po1.png';
+import po2 from './po2.png';
+import po3 from './po3.png';
+import po4 from './po4.png';
+import po5 from './po5.png';
+import po6 from './po6.png';
+import po7 from './po7.png';
+import po8 from './po8.png';
+import po9 from './po9.png';
+import po10 from './po10.png';
+import po11 from './po11.png';
+import po12 from './po12.png';
 
 const assets = {
 
@@ -15,12 +21,18 @@ const assets = {
   logo1,
   seen,
   seenn,
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6
+  po1,
+  po2,
+  po3,
+  po4,
+  po5,
+  po6,
+  po7,
+  po8,
+  po9,
+  po10,
+  po11,
+  po12
 };
 
 
