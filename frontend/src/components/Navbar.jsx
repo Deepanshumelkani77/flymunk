@@ -22,6 +22,7 @@ import {
   MoreHorizontal,
   MapPin,
   Train,
+  ChevronDown,
 } from 'lucide-react'
 import assets from '../assets/assets.js'
 
@@ -115,6 +116,7 @@ const Navbar = () => {
   const [showMenuDropdown, setShowMenuDropdown] = useState(false)
   const [showMoreServicesDropdown, setShowMoreServicesDropdown] = useState(false)
   const [showTransportDropdown, setShowTransportDropdown] = useState(false)
+  const [showAttractionsDropdown, setShowAttractionsDropdown] = useState(false)
   const [currency, setCurrency] = useState(CURRENCIES[0])
   const [language, setLanguage] = useState(LANGUAGES[0])
   const [dropdownView, setDropdownView] = useState('currency')
@@ -122,6 +124,7 @@ const Navbar = () => {
   const menuDropdownRef = useRef(null)
   const moreServicesRef = useRef(null)
   const transportRef = useRef(null)
+  const attractionsRef = useRef(null)
 
   const menuItems = [
     { id: 'support', name: 'Customer Support', icon: <Phone size={18} /> },
@@ -156,6 +159,9 @@ const Navbar = () => {
       if (transportRef.current && !transportRef.current.contains(e.target)) {
         setShowTransportDropdown(false)
       }
+      if (attractionsRef.current && !attractionsRef.current.contains(e.target)) {
+        setShowAttractionsDropdown(false)
+      }
     }
     document.addEventListener('mousedown', onClickOutside)
     return () => document.removeEventListener('mousedown', onClickOutside)
@@ -183,14 +189,15 @@ const Navbar = () => {
             {SERVICES.map((service) => {
               const isActive = location.pathname === `/${service.id}`
               const isTransport = service.id === 'transport'
+              const isAttractions = service.id === 'attractions'
               
               return (
                 <div
                   key={service.id}
                   className="relative"
-                  ref={isTransport ? transportRef : null}
-                  onMouseEnter={isTransport ? () => setShowTransportDropdown(true) : undefined}
-                  onMouseLeave={isTransport ? () => setShowTransportDropdown(false) : undefined}
+                  ref={isTransport ? transportRef : isAttractions ? attractionsRef : null}
+                  onMouseEnter={isTransport ? () => setShowTransportDropdown(true) : isAttractions ? () => setShowAttractionsDropdown(true) : undefined}
+                  onMouseLeave={isTransport ? () => setShowTransportDropdown(false) : isAttractions ? () => setShowAttractionsDropdown(false) : undefined}
                 >
                   <Link
                     to={`/${service.id}`}
@@ -205,6 +212,15 @@ const Navbar = () => {
                     >
                       {service.name}
                     </span>
+                    {(isTransport || isAttractions) && (
+                      <ChevronDown 
+                        size={14} 
+                        className={`ml-1 text-gray-500 transition-transform duration-300 ${
+                          (isTransport && showTransportDropdown) || (isAttractions && showAttractionsDropdown) ? 'rotate-180' : ''
+                        }`} 
+                        style={{ color: isActive ? ORANGE : '#64748B' }} 
+                      />
+                    )}
                     {/* animated underline: grows from center on hover, stays full-width when active */}
                     <span
                       className={`absolute left-4 right-4 -bottom-0.5 h-[2px] rounded-full origin-center transition-transform duration-300 ease-out ${
@@ -255,6 +271,35 @@ const Navbar = () => {
                       >
                         <Train size={18} style={{ color: ORANGE }} />
                         <span>Train</span>
+                      </Link>
+                    </div>
+                  )}
+
+                  {isAttractions && showAttractionsDropdown && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                      <Link
+                        to="/attractions"
+                        onClick={() => setShowAttractionsDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Landmark size={18} style={{ color: ORANGE }} />
+                        <span>Attractions</span>
+                      </Link>
+                      <Link
+                        to="/group-trip"
+                        onClick={() => setShowAttractionsDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Users size={18} style={{ color: ORANGE }} />
+                        <span>Group Trip</span>
+                      </Link>
+                      <Link
+                        to="/private-trip"
+                        onClick={() => setShowAttractionsDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <MapPin size={18} style={{ color: ORANGE }} />
+                        <span>Private Trip</span>
                       </Link>
                     </div>
                   )}
