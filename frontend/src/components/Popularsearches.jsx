@@ -418,9 +418,11 @@ const PopularSearches = () => {
 
         <div className="relative">
           <div
-            className={`divide-y divide-gray-100 transition-[max-height] duration-500 ease-in-out overflow-hidden ${
-              expanded ? 'max-h-[8000px]' : 'max-h-[460px]'
-            }`}
+            className={
+              expanded
+                ? 'divide-y divide-gray-100'
+                : 'divide-y divide-gray-100 overflow-hidden max-h-[460px] transition-[max-height] duration-500 ease-in-out'
+            }
           >
             {visibleCategories.map((category) => {
               const totalCount = category.groups
