@@ -128,104 +128,196 @@ const DOMESTIC_ROUTE_GROUPS = [
   { city: 'Chandigarh', items: r('Chandigarh', CHANDIGARH_DESTS) },
   { city: 'Bhubaneswar', items: r('Bhubaneswar', BHUBANESWAR_DESTS) },
   { city: 'Srinagar', items: r('Srinagar', SRINAGAR_DESTS) },
-  { city: 'Varanasi', items: r('Varanasi', VARANASI_DESTS) },
-  { city: 'Indore', items: r('Indore', INDORE_DESTS) },
-  { city: 'Nagpur', items: r('Nagpur', NAGPUR_DESTS) },
-  { city: 'Patna', items: r('Patna', PATNA_DESTS) },
-  { city: 'Coimbatore', items: r('Coimbatore', COIMBATORE_DESTS) },
-  { city: 'Visakhapatnam', items: r('Visakhapatnam', VISAKHAPATNAM_DESTS) },
-  { city: 'Tiruchirappalli', items: r('Tiruchirappalli', TIRUCHIRAPPALLI_DESTS) },
-  { city: 'Madurai', items: r('Madurai', MADURAI_DESTS) },
-  { city: 'Mangalore', items: r('Mangalore', MANGALORE_DESTS) },
-  { city: 'Kozhikode', items: r('Kozhikode', KOZHIKODE_DESTS) },
-  { city: 'Vijayawada', items: r('Vijayawada', VIJAYAWADA_DESTS) },
-  { city: 'Tirupati', items: r('Tirupati', TIRUPATI_DESTS) },
-  { city: 'Ranchi', items: r('Ranchi', RANCHI_DESTS) },
-  { city: 'Raipur', items: r('Raipur', RAIPUR_DESTS) },
-  { city: 'Dehradun', items: r('Dehradun', DEHRADUN_DESTS) },
-  { city: 'Jammu', items: r('Jammu', JAMMU_DESTS) },
-  { city: 'Amritsar', items: r('Amritsar', AMRITSAR_DESTS) },
-  { city: 'Surat', items: r('Surat', SURAT_DESTS) },
-  { city: 'Vadodara', items: r('Vadodara', VADODARA_DESTS) },
-  { city: 'Rajkot', items: r('Rajkot', RAJKOT_DESTS) },
-  { city: 'Bhavnagar', items: r('Bhavnagar', BHAVNAGAR_DESTS) },
-  { city: 'Jamnagar', items: r('Jamnagar', JAMNAGAR_DESTS) },
-  { city: 'Bhuj', items: r('Bhuj', BHUJ_DESTS) },
-  { city: 'Jodhpur', items: r('Jodhpur', JODHPUR_DESTS) },
-  { city: 'Bikaner', items: r('Bikaner', BIKANER_DESTS) },
-  { city: 'Udaipur', items: r('Udaipur', UDAIPUR_DESTS) },
-  { city: 'Jaisalmer', items: r('Jaisalmer', JAISALMER_DESTS) },
-  { city: 'Aurangabad', items: r('Aurangabad', AURANGABAD_DESTS) },
-  { city: 'Nashik', items: r('Nashik', NASHIK_DESTS) },
-  { city: 'Kolhapur', items: r('Kolhapur', KOLHAPUR_DESTS) },
-  { city: 'Belagavi', items: r('Belagavi', BELAGAVI_DESTS) },
-  { city: 'Hubballi', items: r('Hubballi', HUBBALLI_DESTS) },
-  { city: 'Mysuru', items: r('Mysuru', MYSURU_DESTS) },
-  { city: 'Dharamshala', items: r('Dharamshala', DHARAMSHALA_DESTS) },
-  { city: 'Shimla', items: r('Shimla', SHIMLA_DESTS) },
-  { city: 'Kullu (Bhuntar)', items: r('Kullu (Bhuntar)', KULLU_DESTS) },
-  { city: 'Leh', items: r('Leh', LEH_DESTS) },
-  { city: 'Gwalior', items: r('Gwalior', GWALIOR_DESTS) },
-  { city: 'Jabalpur', items: r('Jabalpur', JABALPUR_DESTS) },
-  { city: 'Khajuraho', items: r('Khajuraho', KHAJURAHO_DESTS) },
-  { city: 'Agra', items: r('Agra', AGRA_DESTS) },
-  { city: 'Kanpur', items: r('Kanpur', KANPUR_DESTS) },
-  { city: 'Prayagraj', items: r('Prayagraj', PRAYAGRAJ_DESTS) },
-  { city: 'Gorakhpur', items: r('Gorakhpur', GORAKHPUR_DESTS) },
-  { city: 'Bareilly', items: r('Bareilly', BAREILLY_DESTS) },
-  { city: 'Ayodhya', items: r('Ayodhya', AYODHYA_DESTS) },
-  { city: 'Pantnagar', items: r('Pantnagar', PANTNAGAR_DESTS) },
-  { city: 'Siliguri (Bagdogra)', items: r('Siliguri (Bagdogra)', SILIGURI_DESTS) },
-  { city: 'Dibrugarh', items: r('Dibrugarh', DIBRUGARH_DESTS) },
-  { city: 'Jorhat', items: r('Jorhat', JORHAT_DESTS) },
-  { city: 'Tezpur', items: r('Tezpur', TEZPUR_DESTS) },
-  { city: 'Lilabari', items: r('Lilabari', LILABARI_DESTS) },
-  { city: 'Dimapur', items: r('Dimapur', DIMAPUR_DESTS) },
-  { city: 'Imphal', items: r('Imphal', IMPHAL_DESTS) },
-  { city: 'Aizawl', items: r('Aizawl', AIZAWL_DESTS) },
-  { city: 'Agartala', items: r('Agartala', AGARTALA_DESTS) },
-  { city: 'Shillong', items: r('Shillong', SHILLONG_DESTS) },
-  { city: 'Itanagar (Hollongi)', items: r('Itanagar (Hollongi)', ITANAGAR_DESTS) },
-  { city: 'Pasighat', items: r('Pasighat', PASIGHAT_DESTS) },
-  { city: 'Tezu', items: r('Tezu', TEZU_DESTS) },
-  { city: 'Port Blair', items: r('Port Blair', PORT_BLAIR_DESTS) },
-  { city: 'Diu', items: r('Diu', DIU_DESTS) },
-  { city: 'Kandla', items: [...r('Kandla', KANDLA_DESTS), 'Keshod to Mumbai'] },
-  { city: 'Porbandar', items: r('Porbandar', PORBANDAR_DESTS) },
-  { city: 'Salem', items: r('Salem', SALEM_DESTS) },
-  { city: 'Tuticorin', items: r('Tuticorin', TUTICORIN_DESTS) },
-  { city: 'Puducherry', items: r('Puducherry', PUDUCHERRY_DESTS) },
-  { city: 'Cuddapah', items: r('Cuddapah', CUDDAPAH_DESTS) },
-  { city: 'Rajahmundry', items: r('Rajahmundry', RAJAHMUNDRY_DESTS) },
-  { city: 'Kurnool', items: r('Kurnool', KURNOOL_DESTS) },
-  { city: 'Bellary', items: r('Bellary', BELLARY_DESTS) },
-  { city: 'Kalaburagi', items: r('Kalaburagi', KALABURAGI_DESTS) },
-  { city: 'Bidar', items: r('Bidar', BIDAR_DESTS) },
-  { city: 'Shirdi', items: r('Shirdi', SHIRDI_DESTS) },
-  { city: 'Sindhudurg', items: r('Sindhudurg', SINDHUDURG_DESTS) },
-  { city: 'Jalgaon', items: r('Jalgaon', JALGAON_DESTS) },
-  { city: 'Nanded', items: r('Nanded', NANDED_DESTS) },
-  { city: 'Akola', items: r('Akola', AKOLA_DESTS) },
-  { city: 'Gaya', items: r('Gaya', GAYA_DESTS) },
-  { city: 'Solapur', items: r('Solapur', SOLAPUR_DESTS) },
-  { city: 'Darbhanga', items: r('Darbhanga', DARBHANGA_DESTS) },
-  { city: 'Purnea', items: r('Purnea', PURNEA_DESTS) },
-  { city: 'Rourkela', items: r('Rourkela', ROURKELA_DESTS) },
-  { city: 'Jharsuguda', items: r('Jharsuguda', JHARSUGUDA_DESTS) },
-  { city: 'Jeypore', items: r('Jeypore', JEYPORE_DESTS) },
-  { city: 'Cooch Behar', items: r('Cooch Behar', COOCH_BEHAR_DESTS) },
-  { city: 'Pakyong', items: r('Pakyong', PAKYONG_DESTS) },
+  // Varanasi, Indore, Nagpur, Patna & Coimbatore are combined into a single
+  // group so they render under one shared heading and one paragraph.
+  {
+    city: 'Varanasi, Indore, Nagpur, Patna, Coimbatore',
+    items: [
+      ...r('Varanasi', VARANASI_DESTS),
+      ...r('Indore', INDORE_DESTS),
+      ...r('Nagpur', NAGPUR_DESTS),
+      ...r('Patna', PATNA_DESTS),
+      ...r('Coimbatore', COIMBATORE_DESTS),
+    ],
+  },
+  // Visakhapatnam, Tiruchirappalli, Madurai, Mangalore, Kozhikode & Vijayawada are
+  // combined into a single group so they render under one shared heading and one paragraph.
+  {
+    city: 'Visakhapatnam, Tiruchirappalli, Madurai, Mangalore, Kozhikode, Vijayawada',
+    items: [
+      ...r('Visakhapatnam', VISAKHAPATNAM_DESTS),
+      ...r('Tiruchirappalli', TIRUCHIRAPPALLI_DESTS),
+      ...r('Madurai', MADURAI_DESTS),
+      ...r('Mangalore', MANGALORE_DESTS),
+      ...r('Kozhikode', KOZHIKODE_DESTS),
+      ...r('Vijayawada', VIJAYAWADA_DESTS),
+    ],
+  },
+  {
+    city: 'Tirupati, Ranchi, Raipur, Dehradun, Jammu, Amritsar, Surat, Vadodara, Rajkot, Bhavnagar',
+    items: [
+      ...r('Tirupati', TIRUPATI_DESTS),
+      ...r('Ranchi', RANCHI_DESTS),
+      ...r('Raipur', RAIPUR_DESTS),
+      ...r('Dehradun', DEHRADUN_DESTS),
+      ...r('Jammu', JAMMU_DESTS),
+      ...r('Amritsar', AMRITSAR_DESTS),
+      ...r('Surat', SURAT_DESTS),
+      ...r('Vadodara', VADODARA_DESTS),
+      ...r('Rajkot', RAJKOT_DESTS),
+      ...r('Bhavnagar', BHAVNAGAR_DESTS),
+    ],
+  },
+  {
+    city: 'Jamnagar, Bhuj, Jodhpur, Udaipur, Jaisalmer, Bikaner, Aurangabad, Nashik, Kolhapur, Belagavi',
+    items: [
+      ...r('Jamnagar', JAMNAGAR_DESTS),
+      ...r('Bhuj', BHUJ_DESTS),
+      ...r('Jodhpur', JODHPUR_DESTS),
+      ...r('Udaipur', UDAIPUR_DESTS),
+      ...r('Jaisalmer', JAISALMER_DESTS),
+      ...r('Bikaner', BIKANER_DESTS),
+      ...r('Aurangabad', AURANGABAD_DESTS),
+      ...r('Nashik', NASHIK_DESTS),
+      ...r('Kolhapur', KOLHAPUR_DESTS),
+      ...r('Belagavi', BELAGAVI_DESTS),
+    ],
+  },
+  {
+    city: 'Hubballi, Mysuru, Dharamshala, Shimla, Kullu (Bhuntar), Leh, Gwalior, Jabalpur, Khajuraho, Agra',
+    items: [
+      ...r('Hubballi', HUBBALLI_DESTS),
+      ...r('Mysuru', MYSURU_DESTS),
+      ...r('Dharamshala', DHARAMSHALA_DESTS),
+      ...r('Shimla', SHIMLA_DESTS),
+      ...r('Kullu (Bhuntar)', KULLU_DESTS),
+      ...r('Leh', LEH_DESTS),
+      ...r('Gwalior', GWALIOR_DESTS),
+      ...r('Jabalpur', JABALPUR_DESTS),
+      ...r('Khajuraho', KHAJURAHO_DESTS),
+      ...r('Agra', AGRA_DESTS),
+    ],
+  },
+  {
+    city: 'Kanpur, Prayagraj, Gorakhpur, Bareilly, Ayodhya, Pantnagar, Siliguri (Bagdogra), Dibrugarh, Jorhat, Tezpur',
+    items: [
+      ...r('Kanpur', KANPUR_DESTS),
+      ...r('Prayagraj', PRAYAGRAJ_DESTS),
+      ...r('Gorakhpur', GORAKHPUR_DESTS),
+      ...r('Bareilly', BAREILLY_DESTS),
+      ...r('Ayodhya', AYODHYA_DESTS),
+      ...r('Pantnagar', PANTNAGAR_DESTS),
+      ...r('Siliguri (Bagdogra)', SILIGURI_DESTS),
+      ...r('Dibrugarh', DIBRUGARH_DESTS),
+      ...r('Jorhat', JORHAT_DESTS),
+      ...r('Tezpur', TEZPUR_DESTS),
+    ],
+  },
+  {
+    city: 'Lilabari, Dimapur, Imphal, Aizawl, Agartala, Shillong, Itanagar (Hollongi), Pasighat, Tezu, Port Blair, Diu',
+    items: [
+      ...r('Lilabari', LILABARI_DESTS),
+      ...r('Dimapur', DIMAPUR_DESTS),
+      ...r('Imphal', IMPHAL_DESTS),
+      ...r('Aizawl', AIZAWL_DESTS),
+      ...r('Agartala', AGARTALA_DESTS),
+      ...r('Shillong', SHILLONG_DESTS),
+      ...r('Itanagar (Hollongi)', ITANAGAR_DESTS),
+      ...r('Pasighat', PASIGHAT_DESTS),
+      ...r('Tezu', TEZU_DESTS),
+      ...r('Port Blair', PORT_BLAIR_DESTS),
+      ...r('Diu', DIU_DESTS),
+    ],
+  },
+  {
+    city: 'Kandla, Keshod, Porbandar, Salem, Tuticorin, Puducherry, Cuddapah, Rajahmundry, Kurnool, Bellary, Kalaburagi, Bidar',
+    items: [
+      ...r('Kandla', KANDLA_DESTS), 'Keshod to Mumbai',
+      ...r('Porbandar', PORBANDAR_DESTS),
+      ...r('Salem', SALEM_DESTS),
+      ...r('Tuticorin', TUTICORIN_DESTS),
+      ...r('Puducherry', PUDUCHERRY_DESTS),
+      ...r('Cuddapah', CUDDAPAH_DESTS),
+      ...r('Rajahmundry', RAJAHMUNDRY_DESTS),
+      ...r('Kurnool', KURNOOL_DESTS),
+      ...r('Bellary', BELLARY_DESTS),
+      ...r('Kalaburagi', KALABURAGI_DESTS),
+      ...r('Bidar', BIDAR_DESTS),
+    ],
+  },
+  {
+    city: 'Shirdi, Sindhudurg, Jalgaon, Nanded, Akola, Solapur, Gaya, Darbhanga, Purnea, Rourkela, Jharsuguda, Jeypore, Cooch Behar, Pakyong',
+    items: [
+      ...r('Shirdi', SHIRDI_DESTS),
+      ...r('Sindhudurg', SINDHUDURG_DESTS),
+      ...r('Jalgaon', JALGAON_DESTS),
+      ...r('Nanded', NANDED_DESTS),
+      ...r('Akola', AKOLA_DESTS),
+      ...r('Solapur', SOLAPUR_DESTS),
+      ...r('Gaya', GAYA_DESTS),
+      ...r('Darbhanga', DARBHANGA_DESTS),
+      ...r('Purnea', PURNEA_DESTS),
+      ...r('Rourkela', ROURKELA_DESTS),
+      ...r('Jharsuguda', JHARSUGUDA_DESTS),
+      ...r('Jeypore', JEYPORE_DESTS),
+      ...r('Cooch Behar', COOCH_BEHAR_DESTS),
+      ...r('Pakyong', PAKYONG_DESTS),
+    ],
+  },
 ].filter((g) => g.items.length > 0)
+
+// ---------------------------------------------------------------------------
+// China & Hong Kong international routes, organised the same city-wise way
+// as the domestic routes above: one destination list per Indian origin
+// airport, covering every Chinese/Hong Kong airport currently served from it.
+// ---------------------------------------------------------------------------
+const DELHI_CHINA_DESTS = ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Chengdu', 'Hong Kong']
+const MUMBAI_CHINA_DESTS = ['Shanghai', 'Guangzhou', 'Shenzhen', 'Hong Kong']
+const BENGALURU_CHINA_DESTS = ['Guangzhou', 'Shenzhen', 'Hong Kong']
+const HYDERABAD_CHINA_DESTS = ['Guangzhou', 'Hong Kong']
+const CHENNAI_CHINA_DESTS = ['Guangzhou', 'Hong Kong']
+const KOLKATA_CHINA_DESTS = ['Guangzhou', 'Hong Kong']
+const AHMEDABAD_CHINA_DESTS = ['Hong Kong']
+const PUNE_CHINA_DESTS = ['Hong Kong']
+const KOCHI_CHINA_DESTS = ['Hong Kong']
+
+const CHINA_HK_ROUTE_GROUPS = [
+  { city: 'Delhi', items: r('Delhi', DELHI_CHINA_DESTS) },
+  { city: 'Mumbai', items: r('Mumbai', MUMBAI_CHINA_DESTS) },
+  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_CHINA_DESTS) },
+  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_CHINA_DESTS) },
+  { city: 'Chennai', items: r('Chennai', CHENNAI_CHINA_DESTS) },
+  { city: 'Kolkata', items: r('Kolkata', KOLKATA_CHINA_DESTS) },
+  { city: 'Ahmedabad', items: r('Ahmedabad', AHMEDABAD_CHINA_DESTS) },
+  { city: 'Pune', items: r('Pune', PUNE_CHINA_DESTS) },
+  { city: 'Kochi', items: r('Kochi', KOCHI_CHINA_DESTS) },
+].filter((g) => g.items.length > 0)
+
+// Onward connections out of the Chinese & Hong Kong hubs themselves (not
+// originating in India) — kept as a flat list, same as the international
+// "Popular Flight Routes" category below.
+const CHINA_HK_ONWARD_ROUTES = [
+  'Beijing to New York', 'Beijing to London', 'Beijing to Bangkok', 'Beijing to Singapore',
+  'Beijing to Tokyo', 'Beijing to Dubai', 'Shanghai to New York', 'Shanghai to London',
+  'Shanghai to Tokyo', 'Shanghai to Dubai', 'Shanghai to Bangkok', 'Guangzhou to Bangkok',
+  'Guangzhou to Singapore', 'Guangzhou to Dubai', 'Shenzhen to Singapore', 'Shenzhen to Bangkok',
+  'Chengdu to Bangkok', 'Chengdu to Singapore', 'Xian to Bangkok', 'Hangzhou to Singapore',
+  'Kunming to Bangkok', 'Hong Kong to Singapore', 'Hong Kong to London', 'Hong Kong to New York',
+  'Hong Kong to Tokyo', 'Hong Kong to Dubai', 'Hong Kong to Sydney', 'Hong Kong to Delhi',
+  'Hong Kong to Mumbai', 'Hong Kong to Kuala Lumpur', 'Hong Kong to Doha',
+]
 
 // Each category mirrors the structure of a real OTA "popular searches" block:
 // a short bold title, followed by a pipe-separated set of internal links.
 // Swap the `items` arrays for your own live city/hotel/package data —
 // the layout and collapse behaviour stay the same.
 const CATEGORIES = [
+ 
   {
     title: 'Domestic Flight Routes (City-wise)',
     groups: DOMESTIC_ROUTE_GROUPS,
   },
+ 
   {
     title: 'Popular Flight Routes',
     items: [
@@ -270,20 +362,10 @@ const CATEGORIES = [
       'Visakhapatnam to Dubai', 'Bhubaneswar to Dubai',
     ],
   },
+
   {
-    title: 'China & Hong Kong Airport Routes',
-    items: [
-      'Delhi to Beijing', 'Delhi to Shanghai', 'Delhi to Guangzhou', 'Mumbai to Shanghai',
-      'Mumbai to Guangzhou', 'Bengaluru to Guangzhou', 'Kolkata to Guangzhou', 'Chennai to Guangzhou',
-      'Beijing to New York', 'Beijing to London', 'Beijing to Bangkok', 'Beijing to Singapore',
-      'Beijing to Tokyo', 'Beijing to Dubai', 'Shanghai to New York', 'Shanghai to London',
-      'Shanghai to Tokyo', 'Shanghai to Dubai', 'Shanghai to Bangkok', 'Guangzhou to Bangkok',
-      'Guangzhou to Singapore', 'Guangzhou to Dubai', 'Shenzhen to Singapore', 'Shenzhen to Bangkok',
-      'Chengdu to Bangkok', 'Chengdu to Singapore', 'Xian to Bangkok', 'Hangzhou to Singapore',
-      'Kunming to Bangkok', 'Hong Kong to Singapore', 'Hong Kong to London', 'Hong Kong to New York',
-      'Hong Kong to Tokyo', 'Hong Kong to Dubai', 'Hong Kong to Sydney', 'Hong Kong to Delhi',
-      'Hong Kong to Mumbai', 'Hong Kong to Kuala Lumpur', 'Hong Kong to Doha',
-    ],
+    title: 'Onward Connections via China & Hong Kong Hubs',
+    items: CHINA_HK_ONWARD_ROUTES,
   },
   {
     title: 'Hotels By Destination',
@@ -449,7 +531,7 @@ const PopularSearches = () => {
                           >
                             {group.city}
                           </h4>
-                          <p className="text-[13px] leading-[1.6] text-gray-500">
+                          <p className="text-[13px] leading-[1.6] text-gray-500 text-justify">
                             {group.items.map((item, idx) => (
                               <React.Fragment key={item}>
                                 <a href="#" className="hover:text-orange-500 transition-colors">
@@ -465,7 +547,7 @@ const PopularSearches = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-[13px] leading-[1.6] text-gray-500">
+                    <p className="text-[13px] leading-[1.6] text-gray-500 text-justify">
                       {category.items.map((item, idx) => (
                         <React.Fragment key={item}>
                           <a href="#" className="hover:text-orange-500 transition-colors">
