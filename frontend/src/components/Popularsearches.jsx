@@ -267,30 +267,193 @@ const DOMESTIC_ROUTE_GROUPS = [
 ].filter((g) => g.items.length > 0)
 
 // ---------------------------------------------------------------------------
-// China & Hong Kong international routes, organised the same city-wise way
-// as the domestic routes above: one destination list per Indian origin
-// airport, covering every Chinese/Hong Kong airport currently served from it.
+// China & Hong Kong international routes, organised city-wise, reflecting
+// nonstop service actually operating as of July 2026:
+//  - Mainland China: direct India-China flights resumed in stages through
+//    late 2025/early 2026 after a ~5-6 year suspension. Currently flying:
+//    Delhi-Beijing (Air China), Delhi-Shanghai (Air India, China Eastern,
+//    IndiGo), Delhi-Guangzhou (IndiGo, China Southern), Mumbai-Guangzhou
+//    (IndiGo), Kolkata-Guangzhou (IndiGo), Kolkata-Shanghai (IndiGo) and
+//    Kolkata-Kunming (China Eastern). Mumbai-Beijing/Shanghai are planned
+//    but not yet confirmed operating, so they're left out for now.
+//  - Hong Kong: long-standing nonstop network via Air India, Cathay Pacific
+//    and IndiGo from Delhi, Mumbai, Bengaluru, Chennai, Hyderabad & Kolkata.
 // ---------------------------------------------------------------------------
-const DELHI_CHINA_DESTS = ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Chengdu', 'Hong Kong']
-const MUMBAI_CHINA_DESTS = ['Shanghai', 'Guangzhou', 'Shenzhen', 'Hong Kong']
-const BENGALURU_CHINA_DESTS = ['Guangzhou', 'Shenzhen', 'Hong Kong']
-const HYDERABAD_CHINA_DESTS = ['Guangzhou', 'Hong Kong']
-const CHENNAI_CHINA_DESTS = ['Guangzhou', 'Hong Kong']
-const KOLKATA_CHINA_DESTS = ['Guangzhou', 'Hong Kong']
-const AHMEDABAD_CHINA_DESTS = ['Hong Kong']
-const PUNE_CHINA_DESTS = ['Hong Kong']
-const KOCHI_CHINA_DESTS = ['Hong Kong']
+const DELHI_CHINA_DESTS = ['Beijing', 'Shanghai', 'Guangzhou', 'Hong Kong']
+const MUMBAI_CHINA_DESTS = ['Guangzhou', 'Hong Kong']
+const BENGALURU_CHINA_DESTS = ['Hong Kong']
+const CHENNAI_CHINA_DESTS = ['Hong Kong']
+const HYDERABAD_CHINA_DESTS = ['Hong Kong']
+const KOLKATA_CHINA_DESTS = ['Guangzhou', 'Shanghai', 'Kunming', 'Hong Kong']
 
 const CHINA_HK_ROUTE_GROUPS = [
   { city: 'Delhi', items: r('Delhi', DELHI_CHINA_DESTS) },
   { city: 'Mumbai', items: r('Mumbai', MUMBAI_CHINA_DESTS) },
-  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_CHINA_DESTS) },
-  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_CHINA_DESTS) },
-  { city: 'Chennai', items: r('Chennai', CHENNAI_CHINA_DESTS) },
   { city: 'Kolkata', items: r('Kolkata', KOLKATA_CHINA_DESTS) },
-  { city: 'Ahmedabad', items: r('Ahmedabad', AHMEDABAD_CHINA_DESTS) },
-  { city: 'Pune', items: r('Pune', PUNE_CHINA_DESTS) },
-  { city: 'Kochi', items: r('Kochi', KOCHI_CHINA_DESTS) },
+  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_CHINA_DESTS) },
+  { city: 'Chennai', items: r('Chennai', CHENNAI_CHINA_DESTS) },
+  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_CHINA_DESTS) },
+].filter((g) => g.items.length > 0)
+
+// ---------------------------------------------------------------------------
+// UAE international routes, organised city-wise, reflecting nonstop service
+// actually operating as of July 2026. India-UAE is one of the busiest
+// international corridors out of India — Emirates, flydubai, Air India,
+// Air India Express and IndiGo collectively serve the four UAE gateway
+// airports (Dubai, Abu Dhabi, Sharjah, Ras Al Khaimah) from 25+ Indian
+// cities, so this list mirrors the domestic city-wise grouping above:
+// bigger metros keep their own heading, smaller feeder cities (mostly
+// Air India Express's Gulf network) are grouped together.
+// ---------------------------------------------------------------------------
+const DELHI_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah']
+const MUMBAI_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ras Al Khaimah']
+const BENGALURU_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah']
+const HYDERABAD_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah']
+const CHENNAI_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah']
+const KOLKATA_UAE_DESTS = ['Dubai', 'Abu Dhabi']
+const KOCHI_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ras Al Khaimah']
+const KOZHIKODE_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ras Al Khaimah']
+const THIRUVANANTHAPURAM_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah']
+const MANGALORE_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ras Al Khaimah']
+const KANNUR_UAE_DESTS = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ras Al Khaimah']
+const AHMEDABAD_UAE_DESTS = ['Dubai', 'Sharjah']
+const PUNE_UAE_DESTS = ['Dubai', 'Sharjah']
+const SURAT_UAE_DESTS = ['Dubai', 'Sharjah']
+const VADODARA_UAE_DESTS = ['Sharjah']
+const RAJKOT_UAE_DESTS = ['Sharjah']
+const AMRITSAR_UAE_DESTS = ['Dubai', 'Sharjah']
+const LUCKNOW_UAE_DESTS = ['Dubai', 'Sharjah']
+const JAIPUR_UAE_DESTS = ['Dubai', 'Sharjah']
+const CHANDIGARH_UAE_DESTS = ['Dubai', 'Sharjah']
+const VARANASI_UAE_DESTS = ['Sharjah']
+const SRINAGAR_UAE_DESTS = ['Sharjah']
+const GOA_UAE_DESTS = ['Dubai']
+const BHUBANESWAR_UAE_DESTS = ['Dubai']
+const NAGPUR_UAE_DESTS = ['Dubai']
+const INDORE_UAE_DESTS = ['Abu Dhabi']
+const COIMBATORE_UAE_DESTS = ['Sharjah']
+const VIJAYAWADA_UAE_DESTS = ['Sharjah']
+const MADURAI_UAE_DESTS = ['Sharjah']
+const TIRUCHIRAPPALLI_UAE_DESTS = ['Sharjah', 'Abu Dhabi']
+const GUWAHATI_UAE_DESTS = ['Dubai', 'Abu Dhabi']
+
+const UAE_ROUTE_GROUPS = [
+  { city: 'Delhi', items: r('Delhi', DELHI_UAE_DESTS) },
+  { city: 'Mumbai', items: r('Mumbai', MUMBAI_UAE_DESTS) },
+  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_UAE_DESTS) },
+  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_UAE_DESTS) },
+  { city: 'Chennai', items: r('Chennai', CHENNAI_UAE_DESTS) },
+  { city: 'Kolkata', items: r('Kolkata', KOLKATA_UAE_DESTS) },
+  // Kerala & coastal Karnataka — the highest-density Gulf-migration corridor,
+  // so each of these keeps its own heading rather than being merged.
+  { city: 'Kochi', items: r('Kochi', KOCHI_UAE_DESTS) },
+  { city: 'Kozhikode (Calicut)', items: r('Kozhikode', KOZHIKODE_UAE_DESTS) },
+  { city: 'Thiruvananthapuram', items: r('Thiruvananthapuram', THIRUVANANTHAPURAM_UAE_DESTS) },
+  { city: 'Mangalore', items: r('Mangalore', MANGALORE_UAE_DESTS) },
+  { city: 'Kannur', items: r('Kannur', KANNUR_UAE_DESTS) },
+  // Gujarat & Maharashtra feeder cities combined into one group.
+  {
+    city: 'Ahmedabad, Pune, Surat, Vadodara, Rajkot',
+    items: [
+      ...r('Ahmedabad', AHMEDABAD_UAE_DESTS),
+      ...r('Pune', PUNE_UAE_DESTS),
+      ...r('Surat', SURAT_UAE_DESTS),
+      ...r('Vadodara', VADODARA_UAE_DESTS),
+      ...r('Rajkot', RAJKOT_UAE_DESTS),
+    ],
+  },
+  // North India feeder cities combined into one group.
+  {
+    city: 'Amritsar, Lucknow, Jaipur, Chandigarh, Varanasi, Srinagar',
+    items: [
+      ...r('Amritsar', AMRITSAR_UAE_DESTS),
+      ...r('Lucknow', LUCKNOW_UAE_DESTS),
+      ...r('Jaipur', JAIPUR_UAE_DESTS),
+      ...r('Chandigarh', CHANDIGARH_UAE_DESTS),
+      ...r('Varanasi', VARANASI_UAE_DESTS),
+      ...r('Srinagar', SRINAGAR_UAE_DESTS),
+    ],
+  },
+  // Remaining single-destination feeder cities combined into one group.
+  {
+    city: 'Goa, Bhubaneswar, Nagpur, Indore, Coimbatore, Vijayawada, Madurai, Tiruchirappalli, Guwahati',
+    items: [
+      ...r('Goa', GOA_UAE_DESTS),
+      ...r('Bhubaneswar', BHUBANESWAR_UAE_DESTS),
+      ...r('Nagpur', NAGPUR_UAE_DESTS),
+      ...r('Indore', INDORE_UAE_DESTS),
+      ...r('Coimbatore', COIMBATORE_UAE_DESTS),
+      ...r('Vijayawada', VIJAYAWADA_UAE_DESTS),
+      ...r('Madurai', MADURAI_UAE_DESTS),
+      ...r('Tiruchirappalli', TIRUCHIRAPPALLI_UAE_DESTS),
+      ...r('Guwahati', GUWAHATI_UAE_DESTS),
+    ],
+  },
+].filter((g) => g.items.length > 0)
+
+// ---------------------------------------------------------------------------
+// UK international routes, organised city-wise, reflecting nonstop service
+// actually operating as of July 2026. London Heathrow is the dominant
+// gateway (Air India, British Airways & Virgin Atlantic all fly it from
+// multiple Indian cities); Gatwick, Birmingham, Manchester and Edinburgh
+// carry a much smaller, mostly single-route network on top of that.
+// ---------------------------------------------------------------------------
+const DELHI_UK_DESTS = ['London Heathrow', 'Birmingham', 'Manchester']
+const MUMBAI_UK_DESTS = ['London Heathrow']
+const BENGALURU_UK_DESTS = ['London Heathrow']
+const HYDERABAD_UK_DESTS = ['London Heathrow', 'Manchester']
+const CHENNAI_UK_DESTS = ['London Heathrow']
+const AMRITSAR_UK_DESTS = ['London Heathrow', 'Birmingham', 'Edinburgh']
+const GOA_UK_DESTS = ['London Heathrow', 'London Gatwick']
+const AHMEDABAD_UK_DESTS = ['London Gatwick']
+const KOCHI_UK_DESTS = ['London Gatwick']
+
+const UK_ROUTE_GROUPS = [
+  { city: 'Delhi', items: r('Delhi', DELHI_UK_DESTS) },
+  { city: 'Mumbai', items: r('Mumbai', MUMBAI_UK_DESTS) },
+  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_UK_DESTS) },
+  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_UK_DESTS) },
+  { city: 'Chennai', items: r('Chennai', CHENNAI_UK_DESTS) },
+  { city: 'Amritsar', items: r('Amritsar', AMRITSAR_UK_DESTS) },
+  // Goa, Ahmedabad & Kochi run smaller, partly seasonal single-route
+  // services, so they're combined into one group.
+  {
+    city: 'Goa, Ahmedabad, Kochi',
+    items: [
+      ...r('Goa', GOA_UK_DESTS),
+      ...r('Ahmedabad', AHMEDABAD_UK_DESTS),
+      ...r('Kochi', KOCHI_UK_DESTS),
+    ],
+  },
+].filter((g) => g.items.length > 0)
+
+// ---------------------------------------------------------------------------
+// Mainland Europe international routes (UK is covered separately above),
+// organised city-wise, reflecting nonstop service actually operating as of
+// July 2026. Delhi is by far the biggest gateway — Air India alone flies
+// nonstop to eight mainland-Europe points from Delhi — with Mumbai,
+// Bengaluru, Hyderabad and Chennai served by Lufthansa, Air France, KLM,
+// SWISS and SAS on a smaller scale.
+// ---------------------------------------------------------------------------
+const DELHI_EUROPE_DESTS = ['Amsterdam', 'Copenhagen', 'Frankfurt', 'Munich', 'Milan', 'Paris', 'Rome', 'Vienna', 'Zurich']
+const MUMBAI_EUROPE_DESTS = ['Frankfurt', 'Munich', 'Zurich', 'Paris', 'Amsterdam', 'Copenhagen']
+const BENGALURU_EUROPE_DESTS = ['Frankfurt', 'Munich', 'Paris', 'Amsterdam']
+const CHENNAI_EUROPE_DESTS = ['Frankfurt']
+const HYDERABAD_EUROPE_DESTS = ['Frankfurt', 'Amsterdam']
+
+const EUROPE_ROUTE_GROUPS = [
+  { city: 'Delhi', items: r('Delhi', DELHI_EUROPE_DESTS) },
+  { city: 'Mumbai', items: r('Mumbai', MUMBAI_EUROPE_DESTS) },
+  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_EUROPE_DESTS) },
+  // Chennai & Hyderabad each only carry one or two nonstop Europe routes
+  // (Lufthansa/KLM), so they're combined into one group.
+  {
+    city: 'Chennai, Hyderabad',
+    items: [
+      ...r('Chennai', CHENNAI_EUROPE_DESTS),
+      ...r('Hyderabad', HYDERABAD_EUROPE_DESTS),
+    ],
+  },
 ].filter((g) => g.items.length > 0)
 
 // Onward connections out of the Chinese & Hong Kong hubs themselves (not
@@ -317,7 +480,22 @@ const CATEGORIES = [
     title: 'Domestic Flight Routes (City-wise)',
     groups: DOMESTIC_ROUTE_GROUPS,
   },
- 
+    {
+    title: 'China & Hong Kong Flight Routes (City-wise)',
+    groups: CHINA_HK_ROUTE_GROUPS,
+  },
+  {
+    title: 'UAE Flight Routes (City-wise)',
+    groups: UAE_ROUTE_GROUPS,
+  },
+  {
+    title: 'UK Flight Routes (City-wise)',
+    groups: UK_ROUTE_GROUPS,
+  },
+  {
+    title: 'Europe Flight Routes (City-wise)',
+    groups: EUROPE_ROUTE_GROUPS,
+  },
   {
     title: 'Popular Flight Routes',
     items: [
