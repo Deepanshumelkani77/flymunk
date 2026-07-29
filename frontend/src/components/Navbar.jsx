@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { AppContext } from '../context/AppContext'
 import {
   Plane,
   Bed,
@@ -109,6 +110,7 @@ const ServiceIcon = ({ service, size = 44, iconSize = 20 }) => {
 }
 
 const Navbar = () => {
+  const { openSignup } = useContext(AppContext)
   const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
@@ -475,8 +477,8 @@ const Navbar = () => {
             </div>
 
             {/* Sign In / Register */}
-            <Link
-              to="/signin"
+            <button
+              onClick={() => openSignup('login')}
               className="group relative flex items-center px-6 py-2.5 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               style={{ backgroundColor: ORANGE, '--tw-ring-color': ORANGE }}
             >
@@ -490,7 +492,7 @@ const Navbar = () => {
               >
                 <path d="M21.7 3.3a1 1 0 00-1-.25L2.3 9.03a1 1 0 00-.06 1.87l7.11 2.85 2.85 7.11a1 1 0 001.87-.06l6-18.4a1 1 0 00-.36-1.1z" />
               </svg>
-            </Link>
+            </button>
 
             {/* Menu Button */}
             <div className="relative" ref={menuDropdownRef}>
@@ -626,14 +628,13 @@ const Navbar = () => {
           </div>
 
           {/* Sign In / Register */}
-          <Link
-            to="/signin"
-            className="block text-center px-6 py-3 rounded-lg font-semibold text-sm text-white"
+          <button
+            onClick={() => { openSignup('login'); setShowMobileMenu(false) }}
+            className="block text-center px-6 py-3 rounded-lg font-semibold text-sm text-white w-full"
             style={{ backgroundColor: ORANGE }}
-            onClick={() => setShowMobileMenu(false)}
           >
             Sign In / Register
-          </Link>
+          </button>
         </div>
       </div>
     </nav>
