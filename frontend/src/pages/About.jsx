@@ -36,8 +36,15 @@ const IMAGES = {
     { src: 'https://picsum.photos/id/1043/800/1000', label: 'Coastal Escapes' },
     { src: 'https://picsum.photos/id/110/800/1000', label: 'Desert Trails' },
     { src: 'https://picsum.photos/id/1050/800/1000', label: 'City Breaks' },
+    { src: 'https://picsum.photos/id/1016/800/1000', label: 'Island Retreats' },
   ],
   cta: 'https://picsum.photos/id/1019/1920/800',
+  services: [
+    { src: 'https://picsum.photos/id/542/400/300', label: 'Flights', desc: 'Domestic & International' },
+    { src: 'https://picsum.photos/id/237/400/300', label: 'Hotels', desc: 'Luxury & Budget Stays' },
+    { src: 'https://picsum.photos/id/1015/400/300', label: 'Visa & Forex', desc: 'Quick Processing' },
+    { src: 'https://picsum.photos/id/1018/400/300', label: 'Travel Insurance', desc: 'Comprehensive Coverage' },
+  ],
 }
 
 const STATS = [
@@ -161,10 +168,10 @@ const About = () => {
       </div>
 
       {/* Our story — image + text */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-24">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="relative">
-            <div className="rounded-3xl overflow-hidden aspect-[4/5] shadow-xl">
+            <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-xl">
               <img
                 src={IMAGES.story}
                 alt="Traveler looking out over a scenic valley"
@@ -214,7 +221,7 @@ const About = () => {
       </div>
 
       {/* Values */}
-      <div className="bg-slate-50 py-4 sm:py-24">
+      <div className="bg-slate-50 py-4 sm:py-10">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-bold tracking-[0.15em] uppercase" style={{ color: ORANGE }}>
@@ -241,7 +248,7 @@ const About = () => {
       </div>
 
       {/* Destinations gallery */}
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-10">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
             <span className="text-xs font-bold tracking-[0.15em] uppercase" style={{ color: ORANGE }}>
@@ -256,7 +263,7 @@ const About = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {IMAGES.destinations.map((dest) => (
             <div key={dest.label} className="group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer">
               <img
@@ -277,6 +284,70 @@ const About = () => {
         </div>
       </div>
 
+      {/* Sustainability initiatives */}
+      <div className="bg-slate-50 py-16 sm:py-10">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-bold tracking-[0.15em] uppercase" style={{ color: ORANGE }}>
+              Sustainability
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold mt-2" style={{ color: NAVY }}>
+              Building a better future
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Community friendly */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+              <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: hexToRgba(ORANGE, 0.1) }}>
+                <Users size={24} style={{ color: ORANGE }} />
+              </div>
+              <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>Community friendly</h3>
+              <p className="text-xs font-semibold mb-2" style={{ color: ORANGE }}>SOS Service & Our CSR Activities</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Global SOS service provides emergency support to global users, offering services such as translation and missing baggage assistance. We support communities in need through donations and volunteering.
+              </p>
+            </div>
+
+            {/* Environmentally-focused */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+              <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: hexToRgba(ORANGE, 0.1) }}>
+                <Globe2 size={24} style={{ color: ORANGE }} />
+              </div>
+              <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>Environmentally-focused</h3>
+              <p className="text-xs font-semibold mb-2" style={{ color: ORANGE }}>Our Carbon Neutrality Goal</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Committed to achieving carbon neutrality by 2050. Reducing greenhouse gas emissions by 47.5% by 2030 to support the global temperature control target of 1.5°C.
+              </p>
+            </div>
+
+            {/* Family friendly */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+              <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: hexToRgba(ORANGE, 0.1) }}>
+                <ShieldCheck size={24} style={{ color: ORANGE }} />
+              </div>
+              <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>Family friendly</h3>
+              <p className="text-xs font-semibold mb-2" style={{ color: ORANGE }}>Employee & Family Well-being</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Commitment to support the well-being of employees and their families through comprehensive programs and initiatives that promote work-life balance.
+              </p>
+            </div>
+
+            {/* Stakeholder friendly */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+              <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: hexToRgba(ORANGE, 0.1) }}>
+                <Handshake size={24} style={{ color: ORANGE }} />
+              </div>
+              <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>Stakeholder friendly</h3>
+              <p className="text-xs font-semibold mb-2" style={{ color: ORANGE }}>ESG Governance & Responsible Travel</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Comprehensive sustainability management system with ESG Management Committee led by CEO. Actively collaborating with partners to promote responsible travel.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Team / quote */}
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden shadow-xl">
@@ -289,13 +360,14 @@ const About = () => {
             />
           </div>
           <div className="p-8 sm:p-12 flex flex-col justify-center" style={{ backgroundColor: NAVY }}>
-            <Quote size={32} style={{ color: ORANGE }} className="mb-4" />
+            <span className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: ORANGE }}>
+              Sustainability
+            </span>
             <p className="text-white text-lg sm:text-xl leading-relaxed font-medium">
-              We don't measure success in bookings — we measure it in trips that went exactly
-              the way you hoped they would.
+              Flymunk is dedicated to sustainability through environmentally-focused practices, community-friendly engagement, family-friendly initiatives, and stakeholder-friendly collaboration.
             </p>
             <p className="mt-5 text-sm" style={{ color: hexToRgba('#FFFFFF', 0.6) }}>
-              The Flymunk Travel Desk
+              Building a better future for travel
             </p>
           </div>
         </div>
