@@ -6,6 +6,8 @@ import Footer from './components/Footer'
 import PopularSearches from './components/Popularsearches'
 import Signup from './components/Signup'
 import AppContextProvider from './context/AppContext'
+import Contact from './pages/Contact'
+import About from './pages/About'
 
 
 const App = () => {
@@ -45,6 +47,8 @@ const App = () => {
         <main>
         <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
         </Routes>
         </main>
         <PopularSearches/>

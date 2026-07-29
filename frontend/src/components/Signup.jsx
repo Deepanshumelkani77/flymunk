@@ -390,7 +390,7 @@ const Signup = () => {
 
 		{/* Forgot Password Modal */}
 		{showForgotPassword && (
-			<div className="fixed inset-0 z-[60] flex items-center justify-center">
+			<div className="fixed inset-0 z-[1000] flex items-center justify-center">
 				<div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowForgotPassword(false)}></div>
 				<div className="relative w-full max-w-md mx-4 bg-white rounded-2xl shadow-xl p-8">
 					<button onClick={() => setShowForgotPassword(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">✕</button>
