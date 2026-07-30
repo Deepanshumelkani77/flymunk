@@ -10,6 +10,7 @@ const ORANGE = '#FE6101'
 // turns it into "Origin to Destination" strings and drops any self-route.
 // ---------------------------------------------------------------------------
 const r = (origin, destinations) => destinations.filter((d) => d !== origin).map((d) => `${origin} to ${d}`)
+const rReverse = (origin, destinations) => destinations.filter((d) => d !== origin).map((d) => `${d} to ${origin}`)
 
 const DELHI_DESTS = ['Agartala','Ahmedabad','Agra','Amritsar','Aurangabad','Ayodhya','Bagdogra','Belagavi','Bengaluru','Bhopal','Bhubaneswar','Chandigarh','Chennai','Coimbatore','Dehradun','Dibrugarh','Dimapur','Dharamshala','Gaya','Goa','Gorakhpur','Guwahati','Gwalior','Hubli','Hyderabad','Imphal','Indore','Itanagar (Hollongi)','Jabalpur','Jaipur','Jammu','Jamnagar','Jodhpur','Jorhat','Kannur','Khajuraho','Kishangarh (Ajmer)','Kochi','Kolkata','Kozhikode','Kullu (Bhuntar)','Leh','Lucknow','Madurai','Mangalore','Mumbai','Mysuru','Nagpur','Nashik','Patna','Pantnagar','Port Blair','Prayagraj','Pune','Raipur','Rajahmundry','Rajkot','Ranchi','Shillong','Shimla','Silchar','Srinagar','Surat','Thiruvananthapuram','Tiruchirappalli','Tirupati','Udaipur','Vadodara','Varanasi','Vijayawada','Visakhapatnam']
 const MUMBAI_DESTS = ['Agartala','Ahmedabad','Amritsar','Aurangabad','Ayodhya','Bagdogra','Belagavi','Bengaluru','Bhopal','Bhubaneswar','Chandigarh','Chennai','Coimbatore','Dehradun','Dibrugarh','Goa','Gorakhpur','Guwahati','Hubli','Hyderabad','Imphal','Indore','Jaipur','Jammu','Jodhpur','Kochi','Kolkata','Kozhikode','Leh','Lucknow','Madurai','Mangalore','Mysuru','Nagpur','Nashik','Patna','Port Blair','Prayagraj','Pune','Raipur','Rajkot','Ranchi','Shillong','Silchar','Srinagar','Surat','Thiruvananthapuram','Tiruchirappalli','Tirupati','Udaipur','Vadodara','Varanasi','Vijayawada','Visakhapatnam','Jabalpur','Gaya','Kandla','Jamnagar','Bhuj','Porbandar','Diu','Kullu (Bhuntar)','Dharamshala','Shimla','Pantnagar','Kannur','Salem','Tuticorin']
@@ -287,12 +288,23 @@ const HYDERABAD_CHINA_DESTS = ['Hong Kong']
 const KOLKATA_CHINA_DESTS = ['Guangzhou', 'Shanghai', 'Kunming', 'Hong Kong']
 
 const CHINA_HK_ROUTE_GROUPS = [
-  { city: 'Delhi', items: r('Delhi', DELHI_CHINA_DESTS) },
-  { city: 'Mumbai', items: r('Mumbai', MUMBAI_CHINA_DESTS) },
-  { city: 'Kolkata', items: r('Kolkata', KOLKATA_CHINA_DESTS) },
-  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_CHINA_DESTS) },
-  { city: 'Chennai', items: r('Chennai', CHENNAI_CHINA_DESTS) },
-  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_CHINA_DESTS) },
+  {
+    city: 'Delhi, Mumbai, Kolkata, Bengaluru, Chennai, Hyderabad',
+    items: [
+      ...r('Delhi', DELHI_CHINA_DESTS),
+      ...r('Mumbai', MUMBAI_CHINA_DESTS),
+      ...r('Kolkata', KOLKATA_CHINA_DESTS),
+      ...r('Bengaluru', BENGALURU_CHINA_DESTS),
+      ...r('Chennai', CHENNAI_CHINA_DESTS),
+      ...r('Hyderabad', HYDERABAD_CHINA_DESTS),
+      ...rReverse('Delhi', DELHI_CHINA_DESTS),
+      ...rReverse('Mumbai', MUMBAI_CHINA_DESTS),
+      ...rReverse('Kolkata', KOLKATA_CHINA_DESTS),
+      ...rReverse('Bengaluru', BENGALURU_CHINA_DESTS),
+      ...rReverse('Chennai', CHENNAI_CHINA_DESTS),
+      ...rReverse('Hyderabad', HYDERABAD_CHINA_DESTS),
+    ],
+  },
 ].filter((g) => g.items.length > 0)
 
 // ---------------------------------------------------------------------------
@@ -338,46 +350,31 @@ const TIRUCHIRAPPALLI_UAE_DESTS = ['Sharjah', 'Abu Dhabi']
 const GUWAHATI_UAE_DESTS = ['Dubai', 'Abu Dhabi']
 
 const UAE_ROUTE_GROUPS = [
-  { city: 'Delhi', items: r('Delhi', DELHI_UAE_DESTS) },
-  { city: 'Mumbai', items: r('Mumbai', MUMBAI_UAE_DESTS) },
-  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_UAE_DESTS) },
-  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_UAE_DESTS) },
-  { city: 'Chennai', items: r('Chennai', CHENNAI_UAE_DESTS) },
-  { city: 'Kolkata', items: r('Kolkata', KOLKATA_UAE_DESTS) },
-  // Kerala & coastal Karnataka — the highest-density Gulf-migration corridor,
-  // so each of these keeps its own heading rather than being merged.
-  { city: 'Kochi', items: r('Kochi', KOCHI_UAE_DESTS) },
-  { city: 'Kozhikode (Calicut)', items: r('Kozhikode', KOZHIKODE_UAE_DESTS) },
-  { city: 'Thiruvananthapuram', items: r('Thiruvananthapuram', THIRUVANANTHAPURAM_UAE_DESTS) },
-  { city: 'Mangalore', items: r('Mangalore', MANGALORE_UAE_DESTS) },
-  { city: 'Kannur', items: r('Kannur', KANNUR_UAE_DESTS) },
-  // Gujarat & Maharashtra feeder cities combined into one group.
   {
-    city: 'Ahmedabad, Pune, Surat, Vadodara, Rajkot',
+    city: 'Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata, Kochi, Kozhikode (Calicut), Thiruvananthapuram, Mangalore, Kannur, Ahmedabad, Pune, Surat, Vadodara, Rajkot, Amritsar, Lucknow, Jaipur, Chandigarh, Varanasi, Srinagar, Goa, Bhubaneswar, Nagpur, Indore, Coimbatore, Vijayawada, Madurai, Tiruchirappalli, Guwahati',
     items: [
+      ...r('Delhi', DELHI_UAE_DESTS),
+      ...r('Mumbai', MUMBAI_UAE_DESTS),
+      ...r('Bengaluru', BENGALURU_UAE_DESTS),
+      ...r('Hyderabad', HYDERABAD_UAE_DESTS),
+      ...r('Chennai', CHENNAI_UAE_DESTS),
+      ...r('Kolkata', KOLKATA_UAE_DESTS),
+      ...r('Kochi', KOCHI_UAE_DESTS),
+      ...r('Kozhikode', KOZHIKODE_UAE_DESTS),
+      ...r('Thiruvananthapuram', THIRUVANANTHAPURAM_UAE_DESTS),
+      ...r('Mangalore', MANGALORE_UAE_DESTS),
+      ...r('Kannur', KANNUR_UAE_DESTS),
       ...r('Ahmedabad', AHMEDABAD_UAE_DESTS),
       ...r('Pune', PUNE_UAE_DESTS),
       ...r('Surat', SURAT_UAE_DESTS),
       ...r('Vadodara', VADODARA_UAE_DESTS),
       ...r('Rajkot', RAJKOT_UAE_DESTS),
-    ],
-  },
-  // North India feeder cities combined into one group.
-  {
-    city: 'Amritsar, Lucknow, Jaipur, Chandigarh, Varanasi, Srinagar',
-    items: [
       ...r('Amritsar', AMRITSAR_UAE_DESTS),
       ...r('Lucknow', LUCKNOW_UAE_DESTS),
       ...r('Jaipur', JAIPUR_UAE_DESTS),
       ...r('Chandigarh', CHANDIGARH_UAE_DESTS),
       ...r('Varanasi', VARANASI_UAE_DESTS),
       ...r('Srinagar', SRINAGAR_UAE_DESTS),
-    ],
-  },
-  // Remaining single-destination feeder cities combined into one group.
-  {
-    city: 'Goa, Bhubaneswar, Nagpur, Indore, Coimbatore, Vijayawada, Madurai, Tiruchirappalli, Guwahati',
-    items: [
       ...r('Goa', GOA_UAE_DESTS),
       ...r('Bhubaneswar', BHUBANESWAR_UAE_DESTS),
       ...r('Nagpur', NAGPUR_UAE_DESTS),
@@ -387,6 +384,37 @@ const UAE_ROUTE_GROUPS = [
       ...r('Madurai', MADURAI_UAE_DESTS),
       ...r('Tiruchirappalli', TIRUCHIRAPPALLI_UAE_DESTS),
       ...r('Guwahati', GUWAHATI_UAE_DESTS),
+      ...rReverse('Delhi', DELHI_UAE_DESTS),
+      ...rReverse('Mumbai', MUMBAI_UAE_DESTS),
+      ...rReverse('Bengaluru', BENGALURU_UAE_DESTS),
+      ...rReverse('Hyderabad', HYDERABAD_UAE_DESTS),
+      ...rReverse('Chennai', CHENNAI_UAE_DESTS),
+      ...rReverse('Kolkata', KOLKATA_UAE_DESTS),
+      ...rReverse('Kochi', KOCHI_UAE_DESTS),
+      ...rReverse('Kozhikode', KOZHIKODE_UAE_DESTS),
+      ...rReverse('Thiruvananthapuram', THIRUVANANTHAPURAM_UAE_DESTS),
+      ...rReverse('Mangalore', MANGALORE_UAE_DESTS),
+      ...rReverse('Kannur', KANNUR_UAE_DESTS),
+      ...rReverse('Ahmedabad', AHMEDABAD_UAE_DESTS),
+      ...rReverse('Pune', PUNE_UAE_DESTS),
+      ...rReverse('Surat', SURAT_UAE_DESTS),
+      ...rReverse('Vadodara', VADODARA_UAE_DESTS),
+      ...rReverse('Rajkot', RAJKOT_UAE_DESTS),
+      ...rReverse('Amritsar', AMRITSAR_UAE_DESTS),
+      ...rReverse('Lucknow', LUCKNOW_UAE_DESTS),
+      ...rReverse('Jaipur', JAIPUR_UAE_DESTS),
+      ...rReverse('Chandigarh', CHANDIGARH_UAE_DESTS),
+      ...rReverse('Varanasi', VARANASI_UAE_DESTS),
+      ...rReverse('Srinagar', SRINAGAR_UAE_DESTS),
+      ...rReverse('Goa', GOA_UAE_DESTS),
+      ...rReverse('Bhubaneswar', BHUBANESWAR_UAE_DESTS),
+      ...rReverse('Nagpur', NAGPUR_UAE_DESTS),
+      ...rReverse('Indore', INDORE_UAE_DESTS),
+      ...rReverse('Coimbatore', COIMBATORE_UAE_DESTS),
+      ...rReverse('Vijayawada', VIJAYAWADA_UAE_DESTS),
+      ...rReverse('Madurai', MADURAI_UAE_DESTS),
+      ...rReverse('Tiruchirappalli', TIRUCHIRAPPALLI_UAE_DESTS),
+      ...rReverse('Guwahati', GUWAHATI_UAE_DESTS),
     ],
   },
 ].filter((g) => g.items.length > 0)
@@ -409,20 +437,27 @@ const AHMEDABAD_UK_DESTS = ['London Gatwick']
 const KOCHI_UK_DESTS = ['London Gatwick']
 
 const UK_ROUTE_GROUPS = [
-  { city: 'Delhi', items: r('Delhi', DELHI_UK_DESTS) },
-  { city: 'Mumbai', items: r('Mumbai', MUMBAI_UK_DESTS) },
-  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_UK_DESTS) },
-  { city: 'Hyderabad', items: r('Hyderabad', HYDERABAD_UK_DESTS) },
-  { city: 'Chennai', items: r('Chennai', CHENNAI_UK_DESTS) },
-  { city: 'Amritsar', items: r('Amritsar', AMRITSAR_UK_DESTS) },
-  // Goa, Ahmedabad & Kochi run smaller, partly seasonal single-route
-  // services, so they're combined into one group.
   {
-    city: 'Goa, Ahmedabad, Kochi',
+    city: 'Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Amritsar, Goa, Ahmedabad, Kochi',
     items: [
+      ...r('Delhi', DELHI_UK_DESTS),
+      ...r('Mumbai', MUMBAI_UK_DESTS),
+      ...r('Bengaluru', BENGALURU_UK_DESTS),
+      ...r('Hyderabad', HYDERABAD_UK_DESTS),
+      ...r('Chennai', CHENNAI_UK_DESTS),
+      ...r('Amritsar', AMRITSAR_UK_DESTS),
       ...r('Goa', GOA_UK_DESTS),
       ...r('Ahmedabad', AHMEDABAD_UK_DESTS),
       ...r('Kochi', KOCHI_UK_DESTS),
+      ...rReverse('Delhi', DELHI_UK_DESTS),
+      ...rReverse('Mumbai', MUMBAI_UK_DESTS),
+      ...rReverse('Bengaluru', BENGALURU_UK_DESTS),
+      ...rReverse('Hyderabad', HYDERABAD_UK_DESTS),
+      ...rReverse('Chennai', CHENNAI_UK_DESTS),
+      ...rReverse('Amritsar', AMRITSAR_UK_DESTS),
+      ...rReverse('Goa', GOA_UK_DESTS),
+      ...rReverse('Ahmedabad', AHMEDABAD_UK_DESTS),
+      ...rReverse('Kochi', KOCHI_UK_DESTS),
     ],
   },
 ].filter((g) => g.items.length > 0)
@@ -442,16 +477,19 @@ const CHENNAI_EUROPE_DESTS = ['Frankfurt']
 const HYDERABAD_EUROPE_DESTS = ['Frankfurt', 'Amsterdam']
 
 const EUROPE_ROUTE_GROUPS = [
-  { city: 'Delhi', items: r('Delhi', DELHI_EUROPE_DESTS) },
-  { city: 'Mumbai', items: r('Mumbai', MUMBAI_EUROPE_DESTS) },
-  { city: 'Bengaluru', items: r('Bengaluru', BENGALURU_EUROPE_DESTS) },
-  // Chennai & Hyderabad each only carry one or two nonstop Europe routes
-  // (Lufthansa/KLM), so they're combined into one group.
   {
-    city: 'Chennai, Hyderabad',
+    city: 'Delhi, Mumbai, Bengaluru, Chennai, Hyderabad',
     items: [
+      ...r('Delhi', DELHI_EUROPE_DESTS),
+      ...r('Mumbai', MUMBAI_EUROPE_DESTS),
+      ...r('Bengaluru', BENGALURU_EUROPE_DESTS),
       ...r('Chennai', CHENNAI_EUROPE_DESTS),
       ...r('Hyderabad', HYDERABAD_EUROPE_DESTS),
+      ...rReverse('Delhi', DELHI_EUROPE_DESTS),
+      ...rReverse('Mumbai', MUMBAI_EUROPE_DESTS),
+      ...rReverse('Bengaluru', BENGALURU_EUROPE_DESTS),
+      ...rReverse('Chennai', CHENNAI_EUROPE_DESTS),
+      ...rReverse('Hyderabad', HYDERABAD_EUROPE_DESTS),
     ],
   },
 ].filter((g) => g.items.length > 0)
