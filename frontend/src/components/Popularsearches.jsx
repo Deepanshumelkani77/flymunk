@@ -522,6 +522,10 @@ const CATEGORIES = [
     title: 'China & Hong Kong Flight Routes (City-wise)',
     groups: CHINA_HK_ROUTE_GROUPS,
   },
+   {
+    title: 'Onward Connections via China & Hong Kong Hubs',
+    items: CHINA_HK_ONWARD_ROUTES,
+  },
   {
     title: 'UAE Flight Routes (City-wise)',
     groups: UAE_ROUTE_GROUPS,
@@ -578,11 +582,18 @@ const CATEGORIES = [
       'Visakhapatnam to Dubai', 'Bhubaneswar to Dubai',
     ],
   },
-
-  {
-    title: 'Onward Connections via China & Hong Kong Hubs',
-    items: CHINA_HK_ONWARD_ROUTES,
+ {
+    title: 'Explore By Country',
+    items: [
+      'United States', 'United Kingdom', 'United Arab Emirates', 'France', 'Italy', 'Spain',
+      'Thailand', 'Singapore', 'Australia', 'Japan', 'Turkey', 'Netherlands', 'Switzerland',
+      'Germany', 'Malaysia', 'Indonesia', 'Maldives', 'South Africa', 'Canada', 'Greece',
+      'Egypt', 'Qatar', 'Saudi Arabia', 'New Zealand', 'Vietnam', 'Portugal', 'Austria',
+      'Ireland', 'Sri Lanka', 'Mauritius', 'Seychelles', 'Morocco', 'Kenya', 'Jordan',
+      'Oman', 'Bahrain', 'Kuwait', 'South Korea', 'China', 'Brazil',
+    ].map((c) => `Flights to ${c}`),
   },
+ 
   {
     title: 'Hotels By Destination',
     items: [
@@ -595,17 +606,7 @@ const CATEGORIES = [
       'Chiang Mai', 'Ho Chi Minh City', 'Hanoi', 'Bora Bora', 'Mauritius', 'Seychelles',
     ].map((c) => `Hotels in ${c}`),
   },
-  {
-    title: 'Explore By Country',
-    items: [
-      'United States', 'United Kingdom', 'United Arab Emirates', 'France', 'Italy', 'Spain',
-      'Thailand', 'Singapore', 'Australia', 'Japan', 'Turkey', 'Netherlands', 'Switzerland',
-      'Germany', 'Malaysia', 'Indonesia', 'Maldives', 'South Africa', 'Canada', 'Greece',
-      'Egypt', 'Qatar', 'Saudi Arabia', 'New Zealand', 'Vietnam', 'Portugal', 'Austria',
-      'Ireland', 'Sri Lanka', 'Mauritius', 'Seychelles', 'Morocco', 'Kenya', 'Jordan',
-      'Oman', 'Bahrain', 'Kuwait', 'South Korea', 'China', 'Brazil',
-    ].map((c) => `Flights to ${c}`),
-  },
+ 
   {
     title: 'Luxury Hotels Worldwide',
     items: [

@@ -8,6 +8,7 @@ import Signup from './components/Signup'
 import AppContextProvider from './context/AppContext'
 import Contact from './pages/Contact'
 import About from './pages/About'
+import Support from './pages/Support'
 
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
+        <Route path="/support" element={<Support />} />
         </Routes>
         </main>
         <PopularSearches/>
