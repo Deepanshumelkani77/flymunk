@@ -11,6 +11,7 @@ import About from './pages/About'
 import Support from './pages/Support'
 import Career from './pages/Career'
 import Blog from './pages/Blog'
+import Faq from './pages/Faq'
 
 
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
         <Route path="/support" element={<Support />} />
         <Route path="/career" element={<Career />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/faq" element={<Faq />} />
         </Routes>
         </main>
         <PopularSearches/>
