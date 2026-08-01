@@ -9,6 +9,8 @@ import AppContextProvider from './context/AppContext'
 import Contact from './pages/Contact'
 import About from './pages/About'
 import Support from './pages/Support'
+import Career from './pages/Career'
+import Blog from './pages/Blog'
 
 
 const App = () => {
@@ -51,6 +53,8 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/career" element={<Career />} />
+        <Route path="/blog" element={<Blog />} />
         </Routes>
         </main>
         <PopularSearches/>
